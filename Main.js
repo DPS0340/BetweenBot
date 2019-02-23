@@ -25,7 +25,7 @@ client.on('message', msg => {
     if(msg.content.startsWith(prefix)) {
         let command = msg.content.substring(prefix.length, msg.content.length);
         if (command === '핑') {
-            reply(msg, '퐁!');
+            msg.reply('**' + Math.round(client.ping) + 'ms!**:hearts:');
         }
         if (command.split(" ")[0] === '언어변경') {
             locale = command.split(" ")[1];
