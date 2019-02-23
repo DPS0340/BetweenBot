@@ -3,7 +3,9 @@ const config = require('./botsetting.json');
 const translate = require('@vitalets/google-translate-api');
 const filehandler = require('./filehandler');
 const admin = require('./admin');
+const blacklist = require('./blacklist');
 const client = new Discord.Client();
+
 
 let locale = 'ko';
 
@@ -25,6 +27,10 @@ client.on('ready', () => {
 
 client.on('message', msg => {
     if(msg.content.startsWith(config.prefix)) {
+        if(blacklist.check((msg.author.id))) {
+            reply(msg, '당신은 이 봇을 쓸 수 없습니다!');
+            return;
+        }
         let command = msg.content.substring(config.prefix.length, msg.content.length);
         if (command === '핑') {
             msg.reply('**' + Math.round(client.ping) + 'ms!**');
@@ -56,6 +62,37 @@ client.on('message', msg => {
             }
             else {
                 reply(msg, '당신은 어드민이 아닙니다!');
+            }
+        }
+        if(command.startsWith('블랙리스트 추가')) {
+            if(admin.check(msg.author.id)) {
+                let blacklistid = command.split(" ")[2];
+                blacklist.list.push(blacklistid);
+                reply(msg, blacklistid + '님은 이제 더이상 봇을 이용하실 수 없습니다.');
+            }
+            else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
+        if(command.startsWith('블랙리스트 해제')) {
+            if(admin.check(msg.author.id)) {
+                let notblacklistid = command.split(" ")[2];
+                blacklist.list = blacklist.list.filter(id => notblacklistid !== id);
+                msg.channel.send(blacklistid + '님은 이제 다시 봇을 이용가능합니다!'); // 번역 TODO 인 것
+            }
+            else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
+        if(command === '블랙리스트') {
+            if(admin.check(msg.author.id)) {
+                msg.reply(msg);
+                for(let id of blacklist.list) {
+                    msg.channel.send(id);
+                }
+            }
+            else {
+                reply(msg, '권한이 없습니다!');
             }
         }
     }
