@@ -2,6 +2,7 @@ let Discord = require('discord.js');
 const config = require('./botsetting.json');
 const translate = require('@vitalets/google-translate-api');
 const filehandler = require('./filehandler');
+const admin = require('./admin');
 const client = new Discord.Client();
 
 let locale = 'ko';
@@ -39,9 +40,22 @@ client.on('message', msg => {
             }
         }
         if(command === '데이터 리스트') {
-            let files = filehandler.getFileList();
-            for(let file of files) {
-                msg.reply(file);
+            if(admin.check(msg.author.id)) {
+                let files = filehandler.getFileList();
+                for (let file of files) {
+                    msg.reply(file);
+                }
+            }
+            else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
+        if(command === '어드민') {
+            if(admin.check(msg.author.id)) {
+                reply(msg, '당신은 어드민입니다!');
+            }
+            else {
+                reply(msg, '당신은 어드민이 아닙니다!');
             }
         }
     }
