@@ -1,2 +1,5 @@
-# BetweenBot
-Sweet Sunshine
+# 사이봇
+
+위키가 곧 매뉴얼입니다.
+
+위키를 봐주세요!
