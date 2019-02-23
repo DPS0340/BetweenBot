@@ -15,15 +15,15 @@ function reply(msg, text) {
         });
 }
 
-let prefix = '사이봇 ';
+
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', msg => {
-    if(msg.content.startsWith(prefix)) {
-        let command = msg.content.substring(prefix.length, msg.content.length);
+    if(msg.content.startsWith(config.prefix)) {
+        let command = msg.content.substring(config.prefix.length, msg.content.length);
         if (command === '핑') {
             msg.reply('**' + Math.round(client.ping) + 'ms!**:hearts:');
         }
