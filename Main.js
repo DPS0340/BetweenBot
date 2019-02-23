@@ -68,6 +68,7 @@ client.on('message', msg => {
             if(admin.check(msg.author.id)) {
                 let blacklistid = command.split(" ")[2];
                 blacklist.list.push(blacklistid);
+                blacklist.save();
                 reply(msg, blacklistid + '님은 이제 더이상 봇을 이용하실 수 없습니다.');
             }
             else {
@@ -78,6 +79,7 @@ client.on('message', msg => {
             if(admin.check(msg.author.id)) {
                 let notblacklistid = command.split(" ")[2];
                 blacklist.list = blacklist.list.filter(id => notblacklistid !== id);
+                blacklist.save();
                 msg.channel.send(blacklistid + '님은 이제 다시 봇을 이용가능합니다!'); // 번역 TODO 인 것
             }
             else {
