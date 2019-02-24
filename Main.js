@@ -159,7 +159,7 @@ client.on('message', msg => {
             reply(msg, unbanEmbed);
         }
 
-        if (msg.content.startsWith(`${prefix}userinfo`)) {
+        if (command.startsWith('userinfo')) {
             let embed = new Discord.RichEmbed()
                 .setAuthor(`User Information`)
                 .setColor('#1e90ff')
@@ -172,7 +172,7 @@ client.on('message', msg => {
             msg.channel.send(embed);
         }
 
-        if (msg.content === `${prefix}serverinfo`) {
+        if (command.startsWith('serverinfo')) {
             let sicon = message.guild.iconURL;
             let serverembed = new Discord.RichEmbed()
                 .setDescription("Server Information")
