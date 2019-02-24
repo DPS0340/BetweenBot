@@ -39,6 +39,8 @@ app.use(function(err, req, res, next) {
 });
 
 exports.run = function(port) {
+  console.log("사이봇 웹 연동중!");
+  console.log("포트:", port || 3000);
   app.listen(port || 3000);
 };
 exports.app = app;
