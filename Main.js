@@ -159,7 +159,7 @@ client.on('message', msg => {
             reply(msg, unbanEmbed);
         }
         
-        if (message.content.startsWith(`${prefix}userinfo`)) {
+        if (message.startsWith(`${prefix}userinfo`)) {
            let embed = new Discord.RichEmbed();
            embed.setAuthor(`User Information`)
            embed.setColor('#1e90ff')
@@ -170,6 +170,23 @@ client.on('message', msg => {
            embed.addField('ID:', `${message.author.id}`)
            embed.addField('Creation date:', message.author.createdAt);
            message.channel.send(embed);
+        }
+        
+        if (cmd === `${prefix}serverinfo`) {
+        let sicon = message.guild.iconURL;
+        let serverembed = new Discord.RichEmbed()
+            .setDescription("Server Information")
+            .setColor("#1e90ff")
+            .setThumbnail(sicon)
+            .addField("Server Name", message.guild.name)
+            .addField("Created On", message.guild.createdAt)
+            .addField("You Joined", message.member.joinedAt)
+            .addField("Total Members", message.guild.memberCount)
+            .addField("Roles", message.guild.roles)
+            .addField("Owner", message.guild.owner)
+            .addField("Channel", message.guild.channels / message.guild.voiceChannel)
+            .addField("ID", message.guild.id);
+        return message.channel.send(serverembed);
     }
         
 });
