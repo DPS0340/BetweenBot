@@ -6,8 +6,24 @@ try {
     exports.list = [];
 }
 
-exports.save = function() {
+const save = () => {
     filehandler.saveFile('blacklist.json', JSON.stringify(exports.list));
+};
+
+exports.add = (id) => {
+    exports.list.push(id);
+    save();
+};
+
+exports.remove = (id) => {
+    if(exports.list.contains(id)) {
+        exports.list = exports.list.filter(id => notblacklistid !== id);
+        save();
+        return true;
+    }
+    else {
+        return false;
+    }
 };
 
 exports.check = function (id) {

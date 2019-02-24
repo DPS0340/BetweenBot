@@ -7,7 +7,7 @@ try {
 }
 
 
-exports.save = function() {
+const save = function() {
     filehandler.saveFile('admins.json', JSON.stringify(exports.list));
 };
 

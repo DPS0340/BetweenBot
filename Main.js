@@ -82,8 +82,7 @@ client.on('message', msg => {
         if (command.startsWith('블랙리스트 추가')) {
             if (admin.check(msg.author.id)) {
                 let blacklistid = command.split(" ")[2];
-                blacklist.list.push(blacklistid);
-                blacklist.save();
+                blacklist.add(blacklistid);
                 reply(msg, blacklistid + '님은 이제 더이상 봇을 이용하실 수 없습니다.');
             } else {
                 reply(msg, '권한이 없습니다!');
@@ -92,9 +91,8 @@ client.on('message', msg => {
         if (command.startsWith('블랙리스트 해제')) {
             if (admin.check(msg.author.id)) {
                 let notblacklistid = command.split(" ")[2];
-                blacklist.list = blacklist.list.filter(id => notblacklistid !== id);
-                blacklist.save();
-                msg.channel.send(notblacklistid + '님은 이제 다시 봇을 이용가능합니다!'); // 번역 TODO 인 것
+                blacklist.remove(id);
+                msg.channel.send(notblacklistid + '님은 이제 다시 봇을 이용가능합니다!');
             } else {
                 reply(msg, '권한이 없습니다!');
             }
@@ -205,27 +203,51 @@ client.on('message', msg => {
                 .addField("ID", msg.guild.id);
             msg.channel.send(serverembed);
         }
-        if (command === '웹토큰') {
+        if (command === '웹토큰 발급') {
             if (admin.check(msg.author.id)) {
-                msg.reply(token.generate());
+                if(token.checkHasToken(msg.author.tag)) {
+                    token.revoke(msg.author.tag);
+                    reply(msg, '이미 발급된 토큰이 있습니다!');
+                    msg.channel.send('기존 토큰을 리보크하고 새 토큰을 발급합니다!');
+                } else {
+                    reply(msg, '신규 토큰을 발급합니다!');
+                }
+                msg.channel.send(token.generate(msg.author.tag));
             } else {
                 reply(msg, '권한이 없습니다!');
             }
         }
-        if (command.startsWith('웹토큰 리보크')) {
+        if (command === '웹토큰 리보크') {
             if (admin.check(msg.author.id)) {
-                token.revoke(args[2]);
+                token.revoke(msg.author.tag);
                 reply(msg, "토큰 리보크 완료!");
             } else {
                 reply(msg, '권한이 없습니다!');
             }
         }
-        if (command.startsWith('웹토큰 확인')) {
+        if (command === '웹토큰 확인') {
             if (admin.check(msg.author.id)) {
-                if(token.checkToken(args[2])) {
+                if(token.checkHasToken(msg.author.tag)) {
                     reply(msg, "이 토큰은 유효합니다!");
                 } else {
                     reply(msg, "이 토큰은 유효하지 않습니다!");
+                }
+            } else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
+        if (command === '웹토큰 초기화') {
+            if (admin.check(msg.author.id)) {
+                token.resetTokenList();
+                reply(msg, "토큰 초기화 완료!");
+            } else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
+        if (command === '웹토큰 리스트') {
+            if (admin.check(msg.author.id)) {
+                for (let [name, aToken] of token.list) {
+                    msg.channel.send(name + " 님의 토큰은 " + aToken.publicToken + " 입니다.");
                 }
             } else {
                 reply(msg, '권한이 없습니다!');
