@@ -1,4 +1,4 @@
-let Discord = require('discord.js');
+const Discord = require('discord.js');
 const config = require('./botsetting.json');
 const translate = require('@vitalets/google-translate-api');
 const filehandler = require('./filehandler');
@@ -6,6 +6,7 @@ const admin = require('./admin');
 const blacklist = require('./blacklist');
 const client = new Discord.Client();
 
+let prefix = '사이봇 ';
 
 let locale = 'ko';
 
@@ -163,29 +164,29 @@ client.on('message', msg => {
             let embed = new Discord.RichEmbed()
                 .setAuthor(`User Information`)
                 .setColor('#1e90ff')
-                .setAuthor(message.author.username)
-                .setDescription(`${message.author.username}님의 정보입니다!`)
-                .setThumbnail(message.author.displayAvatarURL)
-                .addField('Name:', ` ${message.author.username}#${message.author.discriminator} `)
-                .addField('ID:', `${message.author.id}`)
-                .addField('Creation date:', message.author.createdAt);
+                .setAuthor(msg.author.username)
+                .setDescription(`${msg.author.username}님의 정보입니다!`)
+                .setThumbnail(msg.author.displayAvatarURL)
+                .addField('Name:', `${msg.author.tag}`)
+                .addField('ID:', `${msg.author.id}`)
+                .addField('Creation date:', msg.author.createdAt);
             msg.channel.send(embed);
         }
 
         if (msg.content === `${prefix}serverinfo`) {
-            let sicon = message.guild.iconURL;
+            let sicon = msg.guild.iconURL;
             let serverembed = new Discord.RichEmbed()
                 .setDescription("Server Information")
                 .setColor("#1e90ff")
                 .setThumbnail(sicon)
-                .addField("Server Name", message.guild.name)
-                .addField("Created On", message.guild.createdAt)
-                .addField("You Joined", message.member.joinedAt)
-                .addField("Total Members", message.guild.memberCount)
-                .addField("Roles", message.guild.roles)
-                .addField("Owner", message.guild.owner)
-                .addField("Channel", message.guild.channels / message.guild.voiceChannel)
-                .addField("ID", message.guild.id);
+                .addField("Server Name", msg.guild.name)
+                .addField("Created On", msg.guild.createdAt)
+                .addField("You Joined", msg.member.joinedAt)
+                .addField("Total Members", msg.guild.memberCount)
+                .addField("Roles", msg.guild.roles.reduce((role, result) => result += role + ' '))
+                .addField("Owner", msg.guild.owner)
+                .addField("Channel", msg.guild.channels.size)
+                .addField("ID", msg.guild.id);
             msg.channel.send(serverembed);
         }
     }
