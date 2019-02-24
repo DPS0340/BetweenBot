@@ -125,6 +125,14 @@ if(command.startsWith('밴')) {
  msg.guild.member(bUser).ban(bReason);
 msg.channel.send(banEmbed);
 }
+  if(command.startsWith('clear')) {    
+ 
+    if(!args[0]) return msg.reply("숫자를 써주세요");
+    message.channel.bulkDelete(args[0]).then(() => {
+    msg.reply(`메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
+  });
+  }
+ 
 });
 
 client.login(config.token);
