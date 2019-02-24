@@ -43,7 +43,7 @@ client.on('message', msg => {
             locale = command.split(" ")[1];
             console.log(locale);
             if (typeof locale === "undefined") {
-                reply(msg, '인자가 없습니다!');
+                reply(msg, '지정한 언어가 없습니다!');
             } else {
                 reply(msg, '언어 변경 완료!');
             }
