@@ -98,6 +98,31 @@ client.on('message', msg => {
             }
         }
     }
+if(command.startsWith('밴')) {  
+ if(!command.member.hasPermission("BAN_MEMBERS")) return ;
+ if(args[0] == "help"){
+   message.reply(`Usage: ${config.prefix}밴 유저맨션 사유`);
+   return;
+ }
+ let bUser = command.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+ if(!bUser) return errors.cantfindUser(message.channel);
+ if(bUser.id === client.user.id) return errors.botuser(message); 
+ let bReason = args.join(" ").slice(22);
+ if(!bReason) return errors.noReason(message.channel);
+    
+ let banEmbed = new Discord.RichEmbed()
+ .setDescription("~Ban~")
+ .setColor("#bc0000")
+ .addField("밴 유저", `${bUser} 와 아이디 ${bUser.id}`)
+ .addField("밴한 유저", `<@${message.author.id}> 와 아이디 ${message.author.id}`)
+ .addField("밴된 채널", message.channel)
+ .addField("시간", message.createdAt)
+ .addField("사유", bReason);
+
+ message.guild.member(bUser).ban(bReason);
+ incidentchannel.send(banEmbed);
+}
+
 });
 
 client.login(config.token);
