@@ -159,10 +159,10 @@ client.on('message', msg => {
             reply(msg, unbanEmbed);
         }
         
-        if (message.startsWith(`${prefix}userinfo`)) {
+        if (message.startsWith(`${config.prefix}userinfo`)) {
            let embed = new Discord.RichEmbed();
            embed.setAuthor(`User Information`)
-           embed.setColor('#1e90ff')
+            embed.setColor(`${config.color}`)
            embed.setAuthor(message.author.username)
            embed.setDescription(`${message.author.username}님의 정보입니다!`)
            embed.setThumbnail(message.author.displayAvatarURL)
@@ -172,11 +172,11 @@ client.on('message', msg => {
            message.channel.send(embed);
         }
         
-        if (cmd === `${prefix}serverinfo`) {
+        if (cmd === `${config.prefix}serverinfo`) {
         let sicon = message.guild.iconURL;
         let serverembed = new Discord.RichEmbed()
             .setDescription("Server Information")
-            .setColor("#1e90ff")
+            .setColor(`${config.color}`)
             .setThumbnail(sicon)
             .addField("Server Name", message.guild.name)
             .addField("Created On", message.guild.createdAt)
