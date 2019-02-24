@@ -99,7 +99,10 @@ client.on('message', msg => {
             }
         }
         if (command.startsWith('밴')) {
-            if (!msg.member.hasPermission("BAN_MEMBERS")) return;
+            if (!msg.member.hasPermission("BAN_MEMBERS")) {
+                reply(msg, '권한이 없습니다!');
+                return;
+            }
             if (args[0] === "help") {
                 reply(msg, `: ${config.prefix}밴 유저맨션 사유`);
                 return;
@@ -130,12 +133,14 @@ client.on('message', msg => {
             });
         }
         if (command.startsWith('언밴')) {
-            if (!msg.member.hasPermission("BAN_MEMBERS")) return;
+            if (!msg.member.hasPermission("BAN_MEMBERS")) {
+                reply(msg, '권한이 없습니다!');
+                return;
+            }
             if (args[0] === "help") {
                 reply(msg, `: ${config.prefix}언밴 유저맨션 사유`);
                 return;
             }
-
             let unbUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
             if (!unbUser) return errors.cantfindUser(msg.channel);
             if (unbUser.id === client.user.id) return errors.botuser(msg);
