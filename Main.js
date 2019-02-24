@@ -103,7 +103,7 @@ client.on('message', msg => {
 if(command.startsWith('밴')) {  
  if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
  if(args[0] == "help"){
-   msg.reply(`: ${config.prefix}밴 유저맨션 사유`);
+ reply(msg,`: ${config.prefix}밴 유저맨션 사유`);
    return;
  }
 
@@ -122,14 +122,14 @@ if(command.startsWith('밴')) {
  .addField("시간", msg.createdAt)
  .addField("사유", bReason);
 
- msg.guild.member(bUser).ban(bReason);
-msg.channel.send(banEmbed);
+ reply(msg, bUser).ban(bReason);
+ reply(msg, banEmbed);
 }
   if(command.startsWith('clear')) {    
  
     if(!args[0]) return msg.reply("숫자를 써주세요");
     message.channel.bulkDelete(args[0]).then(() => {
-    msg.reply(`메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
+     reply(msg, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
   });
   }
  
