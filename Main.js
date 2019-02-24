@@ -5,11 +5,14 @@ const filehandler = require('./filehandler');
 const admin = require('./admin');
 const blacklist = require('./blacklist');
 const client = new Discord.Client();
+const web = require('./BetweenBot-Web/app');
+const webapp = web.app;
 
+web.run();
 
 let locale = 'ko';
 
-// eply 번역
+// reply 번역
 function reply(msg, text) {
     translate(text, {to: locale})
         .then(function (res) {
