@@ -17,6 +17,7 @@ function reply(msg, text) {
         .catch(err => {
             console.error(err);
         });
+    return msg;
 }
 
 
@@ -118,12 +119,13 @@ client.on('message', msg => {
                 .addField("시간", msg.createdAt)
                 .addField("사유", bReason);
 
-            reply(msg, bUser).ban(bReason);
-            reply(msg, banEmbed);
+            reply(msg, bUser.tag);
+            msg.guild.ban(bUser);
+            msg.channel.send({embed: banEmbed});
         }
         if (command.startsWith('clear')) {
             if (!args[0]) return msg.reply("숫자를 써주세요");
-            message.channel.bulkDelete(args[0]).then(() => {
+            msg.channel.bulkDelete(args[0]).then(() => {
                 reply(msg, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
             });
         }
