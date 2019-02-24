@@ -67,7 +67,7 @@ client.on('message', msg => {
                 reply(msg, '당신은 어드민이 아닙니다!');
             }
         }
-        if(command === "help")) {
+        if(command === "help") {
             reply(msg, '아직 개발 ');
         }
         if(command.startsWith('블랙리스트 추가')) {
