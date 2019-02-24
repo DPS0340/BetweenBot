@@ -158,37 +158,37 @@ client.on('message', msg => {
             msg.guild.unban(unbUser);
             reply(msg, unbanEmbed);
         }
-        
-        if (message.startsWith(`${prefix}userinfo`)) {
-           let embed = new Discord.RichEmbed();
-           embed.setAuthor(`User Information`)
-           embed.setColor('#1e90ff')
-           embed.setAuthor(message.author.username)
-           embed.setDescription(`${message.author.username}님의 정보입니다!`)
-           embed.setThumbnail(message.author.displayAvatarURL)
-           embed.addField('Name:', ` ${message.author.username}#${message.author.discriminator} `)
-           embed.addField('ID:', `${message.author.id}`)
-           embed.addField('Creation date:', message.author.createdAt);
-           message.channel.send(embed);
+
+        if (msg.content.startsWith(`${prefix}userinfo`)) {
+            let embed = new Discord.RichEmbed()
+                .setAuthor(`User Information`)
+                .setColor('#1e90ff')
+                .setAuthor(message.author.username)
+                .setDescription(`${message.author.username}님의 정보입니다!`)
+                .setThumbnail(message.author.displayAvatarURL)
+                .addField('Name:', ` ${message.author.username}#${message.author.discriminator} `)
+                .addField('ID:', `${message.author.id}`)
+                .addField('Creation date:', message.author.createdAt);
+            msg.channel.send(embed);
         }
-        
-        if (cmd === `${prefix}serverinfo`) {
-        let sicon = message.guild.iconURL;
-        let serverembed = new Discord.RichEmbed()
-            .setDescription("Server Information")
-            .setColor("#1e90ff")
-            .setThumbnail(sicon)
-            .addField("Server Name", message.guild.name)
-            .addField("Created On", message.guild.createdAt)
-            .addField("You Joined", message.member.joinedAt)
-            .addField("Total Members", message.guild.memberCount)
-            .addField("Roles", message.guild.roles)
-            .addField("Owner", message.guild.owner)
-            .addField("Channel", message.guild.channels / message.guild.voiceChannel)
-            .addField("ID", message.guild.id);
-        return message.channel.send(serverembed);
+
+        if (msg.content === `${prefix}serverinfo`) {
+            let sicon = message.guild.iconURL;
+            let serverembed = new Discord.RichEmbed()
+                .setDescription("Server Information")
+                .setColor("#1e90ff")
+                .setThumbnail(sicon)
+                .addField("Server Name", message.guild.name)
+                .addField("Created On", message.guild.createdAt)
+                .addField("You Joined", message.member.joinedAt)
+                .addField("Total Members", message.guild.memberCount)
+                .addField("Roles", message.guild.roles)
+                .addField("Owner", message.guild.owner)
+                .addField("Channel", message.guild.channels / message.guild.voiceChannel)
+                .addField("ID", message.guild.id);
+            msg.channel.send(serverembed);
+        }
     }
-        
 });
 
 client.login(config.token);
