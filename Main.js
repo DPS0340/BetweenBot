@@ -158,7 +158,20 @@ client.on('message', msg => {
             msg.guild.unban(unbUser);
             reply(msg, unbanEmbed);
         }
+        
+        if (message.content.startsWith(`${prefix}userinfo`)) {
+           let embed = new Discord.RichEmbed();
+           embed.setAuthor(`User Information`)
+           embed.setColor('#1e90ff')
+           embed.setAuthor(message.author.username)
+           embed.setDescription(`${message.author.username}님의 정보입니다!`)
+           embed.setThumbnail(message.author.displayAvatarURL)
+           embed.addField('Name:', ` ${message.author.username}#${message.author.discriminator} `)
+           embed.addField('ID:', `${message.author.id}`)
+           embed.addField('Creation date:', message.author.createdAt);
+           message.channel.send(embed);
     }
+        
 });
 
 client.login(config.token);
