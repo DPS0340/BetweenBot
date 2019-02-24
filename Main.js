@@ -99,29 +99,29 @@ client.on('message', msg => {
         }
     }
 if(command.startsWith('밴')) {  
- if(!message.member.hasPermission("BAN_MEMBERS")) return ;
+ if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
  if(args[0] == "help"){
-   message.reply(`Usage: ${config.prefix}밴 유저맨션 사유`);
+   msg.reply(`: ${config.prefix}밴 유저맨션 사유`);
    return;
  }
 
- let bUser = command.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
- if(!bUser) return errors.cantfindUser(message.channel);
- if(bUser.id === client.user.id) return errors.botuser(message); 
+ let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+ if(!bUser) return errors.cantfindUser(msg.channel);
+ if(bUser.id === client.user.id) return errors.botuser(msg); 
  let bReason = args.join(" ").slice(22);
- if(!bReason) return errors.noReason(message.channel);
+ if(!bReason) return errors.noReason(msg.channel);
     
  let banEmbed = new Discord.RichEmbed()
  .setDescription("밴")
- .setColor("#bc0000")
+ .setColor(`${config.color}`)
  .addField("밴 유저", `${bUser} 와 아이디 ${bUser.id}`)
- .addField("밴한 유저", `<@${message.author.id}> 와 아이디 ${message.author.id}`)
- .addField("밴된 채널", message.channel)
- .addField("시간", message.createdAt)
+ .addField("밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
+ .addField("밴된 채널", msg.channel)
+ .addField("시간", msg.createdAt)
  .addField("사유", bReason);
 
- message.guild.member(bUser).ban(bReason);
- message.channel.send(banEmbed);
+ msg.guild.member(bUser).ban(bReason);
+msg.channel.send(banEmbed);
 }
 });
 
