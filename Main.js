@@ -14,14 +14,19 @@ let locale = 'ko';
 
 // reply 번역
 function reply(msg, text) {
-    translate(text, {to: locale})
-        .then(function (res) {
-            msg.reply(res.text);
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    return msg;
+    if(locale === 'ko') {
+        msg.reply(text);
+        return msg;
+    } else {
+        translate(text, {to: locale})
+            .then(function (res) {
+                msg.reply(res.text);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        return msg;
+    }
 }
 
 
