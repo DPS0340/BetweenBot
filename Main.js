@@ -21,7 +21,6 @@ function reply(msg, text) {
 }
 
 
-
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
