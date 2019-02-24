@@ -9,6 +9,7 @@ const client = new Discord.Client();
 
 let locale = 'ko';
 
+// eply 번역
 function reply(msg, text) {
     translate(text, {to: locale})
         .then(function (res) {
@@ -22,7 +23,7 @@ function reply(msg, text) {
 
 
 client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+    console.log('사이봇 실행중!');
 });
 
 client.on('message', msg => {
@@ -38,12 +39,13 @@ client.on('message', msg => {
         if (command === '핑') {
             msg.reply('**' + Math.round(client.ping) + 'ms!**');
         }
-        if (command.split(" ")[0] === '언어변경') {
-            locale = command.split(" ")[1];
+        if (command.startsWith('언어변경')) {
+            let newlocale = args[1];
             console.log(locale);
-            if (typeof locale === "undefined") {
+            if (typeof newlocale === "undefined") {
                 reply(msg, '지정한 언어가 없습니다!');
             } else {
+                locale = newlocale;
                 reply(msg, '언어 변경 완료!');
             }
         }
@@ -103,7 +105,7 @@ client.on('message', msg => {
                 return;
             }
             if (args[1] === "help") {
-                reply(msg, `: ${config.prefix}밴 유저맨션 사유`);
+                reply(msg, `: ${config.prefix}밴 유저멘션 사유`);
                 return;
             }
             let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
@@ -111,7 +113,6 @@ client.on('message', msg => {
             if (bUser.id === client.user.id) return errors.botuser(msg);
             let bReason = args.join(" ").slice(22);
             if (!bReason) return errors.noReason(msg.channel);
-
             let banEmbed = new Discord.RichEmbed()
                 .setDescription("밴")
                 .setColor(`${config.color}`)
@@ -120,7 +121,6 @@ client.on('message', msg => {
                 .addField("밴된 채널", msg.channel)
                 .addField("시간", msg.createdAt)
                 .addField("사유", bReason);
-
             reply(msg, bUser.tag);
             msg.guild.ban(bUser);
             msg.channel.send(banEmbed);
@@ -156,18 +156,30 @@ client.on('message', msg => {
             reply(msg, unbanEmbed);
         }
         if (command.startsWith('userinfo')) {
-            let embed = new Discord.RichEmbed()
-                .setAuthor(`User Information`)
-                .setColor('#1e90ff')
-                .setAuthor(msg.author.username)
-                .setDescription(`${msg.author.username}님의 정보입니다!`)
-                .setThumbnail(msg.author.displayAvatarURL)
-                .addField('Name:', `${msg.author.tag}`)
-                .addField('ID:', `${msg.author.id}`)
-                .addField('Creation date:', msg.author.createdAt);
-            msg.channel.send(embed);
-        }
+            function senduserinfo(user) {
+                embed.setAuthor(`User Information`)
+                    .setColor('#1e90ff')
+                    .setAuthor(user.username)
+                    .setDescription(`${user.username}님의 정보입니다!`)
+                    .setThumbnail(user.displayAvatarURL)
+                    .addField('Name:', `${user.tag}`)
+                    .addField('ID:', `${user.id}`)
+                    .addField('Creation date:', user.createdAt);
+                msg.channel.send(embed);
+            }
+            let embed = new Discord.RichEmbed();
+            if (args.length === 1) {
+                let user = msg.author;
+                senduserinfo(user);
+            } else if (args.length === 2) {
+                let user = msg.mentions.users.first();
+                senduserinfo(user);
+            } else {
+                msg.channel.send("인자가 너무 많습니다.");
+                return;
+            }
 
+        }
         if (command === 'serverinfo') {
             let serverembed = new Discord.RichEmbed()
                 .setDescription("Server Information")
