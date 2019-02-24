@@ -83,7 +83,7 @@ client.on('message', msg => {
                 let notblacklistid = command.split(" ")[2];
                 blacklist.list = blacklist.list.filter(id => notblacklistid !== id);
                 blacklist.save();
-                msg.channel.send(blacklistid + '님은 이제 다시 봇을 이용가능합니다!'); // 번역 TODO 인 것
+                msg.channel.send(notblacklistid + '님은 이제 다시 봇을 이용가능합니다!'); // 번역 TODO 인 것
             } else {
                 reply(msg, '권한이 없습니다!');
             }
