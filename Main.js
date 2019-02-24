@@ -29,7 +29,7 @@ client.on('message', msg => {
     if (msg.author.bot) return;
     if (msg.channel.type === "dm") return;
     if(msg.content.startsWith(config.prefix)) {
-        if(blacklist.check((msg.author.id))) {
+        if (blacklist.check((msg.author.id))) {
             reply(msg, '당신은 이 봇을 쓸 수 없습니다!');
             return;
         }
@@ -41,124 +41,116 @@ client.on('message', msg => {
         if (command.split(" ")[0] === '언어변경') {
             locale = command.split(" ")[1];
             console.log(locale);
-            if(typeof locale === "undefined") {
+            if (typeof locale === "undefined") {
                 reply(msg, '인자가 없습니다!');
-            }
-            else {
+            } else {
                 reply(msg, '언어 변경 완료!');
             }
         }
-        if(command === '데이터 리스트') {
-            if(admin.check(msg.author.id)) {
+        if (command === '데이터 리스트') {
+            if (admin.check(msg.author.id)) {
                 let files = filehandler.getFileList();
                 for (let file of files) {
                     msg.reply(file);
                 }
-            }
-            else {
+            } else {
                 reply(msg, '권한이 없습니다!');
             }
         }
-        if(command === '어드민') {
-            if(admin.check(msg.author.id)) {
+        if (command === '어드민') {
+            if (admin.check(msg.author.id)) {
                 reply(msg, '당신은 어드민입니다!');
-            }
-            else {
+            } else {
                 reply(msg, '당신은 어드민이 아닙니다!');
             }
         }
-        if(command === "help") {
+        if (command === "help") {
             reply(msg, '아직 개발 ');
         }
-        if(command.startsWith('블랙리스트 추가')) {
-            if(admin.check(msg.author.id)) {
+        if (command.startsWith('블랙리스트 추가')) {
+            if (admin.check(msg.author.id)) {
                 let blacklistid = command.split(" ")[2];
                 blacklist.list.push(blacklistid);
                 blacklist.save();
                 reply(msg, blacklistid + '님은 이제 더이상 봇을 이용하실 수 없습니다.');
-            }
-            else {
+            } else {
                 reply(msg, '권한이 없습니다!');
             }
         }
-        if(command.startsWith('블랙리스트 해제')) {
-            if(admin.check(msg.author.id)) {
+        if (command.startsWith('블랙리스트 해제')) {
+            if (admin.check(msg.author.id)) {
                 let notblacklistid = command.split(" ")[2];
                 blacklist.list = blacklist.list.filter(id => notblacklistid !== id);
                 blacklist.save();
                 msg.channel.send(blacklistid + '님은 이제 다시 봇을 이용가능합니다!'); // 번역 TODO 인 것
-            }
-            else {
+            } else {
                 reply(msg, '권한이 없습니다!');
             }
         }
-        if(command === '블랙리스트') {
-            if(admin.check(msg.author.id)) {
+        if (command === '블랙리스트') {
+            if (admin.check(msg.author.id)) {
                 msg.reply(msg);
-                for(let id of blacklist.list) {
+                for (let id of blacklist.list) {
                     msg.channel.send(id);
                 }
-            }
-            else {
+            } else {
                 reply(msg, '권한이 없습니다!');
             }
         }
-        if(command.startsWith('밴')) {
-            if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
-            if(args[0] === "help") {
-                reply(msg,`: ${config.prefix}밴 유저맨션 사유`);
+        if (command.startsWith('밴')) {
+            if (!msg.member.hasPermission("BAN_MEMBERS")) return;
+            if (args[0] === "help") {
+                reply(msg, `: ${config.prefix}밴 유저맨션 사유`);
                 return;
             }
+            let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+            if (!bUser) return errors.cantfindUser(msg.channel);
+            if (bUser.id === client.user.id) return errors.botuser(msg);
+            let bReason = args.join(" ").slice(22);
+            if (!bReason) return errors.noReason(msg.channel);
+
+            let banEmbed = new Discord.RichEmbed()
+                .setDescription("밴")
+                .setColor(`${config.color}`)
+                .addField("밴 유저", `${bUser} 와 아이디 ${bUser.id}`)
+                .addField("밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
+                .addField("밴된 채널", msg.channel)
+                .addField("시간", msg.createdAt)
+                .addField("사유", bReason);
+
+            reply(msg, bUser).ban(bReason);
+            reply(msg, banEmbed);
         }
-
-        let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
-        if(!bUser) return errors.cantfindUser(msg.channel);
-        if(bUser.id === client.user.id) return errors.botuser(msg);
-        let bReason = args.join(" ").slice(22);
-        if(!bReason) return errors.noReason(msg.channel);
-
-        let banEmbed = new Discord.RichEmbed()
-            .setDescription("밴")
-            .setColor(`${config.color}`)
-            .addField("밴 유저", `${bUser} 와 아이디 ${bUser.id}`)
-            .addField("밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
-            .addField("밴된 채널", msg.channel)
-            .addField("시간", msg.createdAt)
-            .addField("사유", bReason);
-
-        reply(msg, bUser).ban(bReason);
-        reply(msg, banEmbed);
-    }
-    if(command.startsWith('clear')) {
-
-        if(!args[0]) return msg.reply("숫자를 써주세요");
-        message.channel.bulkDelete(args[0]).then(() => {
-            reply(msg, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
-        });
-    }
-    if(command.startsWith('언밴')) {
-        if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
-        if(args[0] === "help"){
-            reply(msg,`: ${config.prefix}언밴 유저맨션 사유`);
-            return;
+        if (command.startsWith('clear')) {
+            if (!args[0]) return msg.reply("숫자를 써주세요");
+            message.channel.bulkDelete(args[0]).then(() => {
+                reply(msg, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
+            });
         }
+        if (command.startsWith('언밴')) {
+            if (!msg.member.hasPermission("BAN_MEMBERS")) return;
+            if (args[0] === "help") {
+                reply(msg, `: ${config.prefix}언밴 유저맨션 사유`);
+                return;
+            }
 
-        let unbUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
-        if(!unbUser) return errors.cantfindUser(msg.channel);
-        if(unbUser.id === client.user.id) return errors.botuser(msg);
-        let unbReason = args.join(" ").slice(22);
-        if(!unbReason) return errors.noReason(msg.channel);
+            let unbUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+            if (!unbUser) return errors.cantfindUser(msg.channel);
+            if (unbUser.id === client.user.id) return errors.botuser(msg);
+            let unbReason = args.join(" ").slice(22);
+            if (!unbReason) return errors.noReason(msg.channel);
 
-        let unbanEmbed = new Discord.RichEmbed()
-            .setDescription("언밴")
-            .setColor(`${config.color}`)
-            .addField("언밴 유저", `${unbUser} 와 아이디 ${unbUser.id}`)
-            .addField("언밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
-            .addField("시간", msg.createdAt)
-            .addField("사유", unbReason);
+            let unbanEmbed = new Discord.RichEmbed()
+                .setDescription("언밴")
+                .setColor(`${config.color}`)
+                .addField("언밴 유저", `${unbUser} 와 아이디 ${unbUser.id}`)
+                .addField("언밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
+                .addField("시간", msg.createdAt)
+                .addField("사유", unbReason);
 
-        msg.guild.unban(unbUser);
-        reply(msg, unbanEmbed);
+            msg.guild.unban(unbUser);
+            reply(msg, unbanEmbed);
+        }
     }
 });
 
