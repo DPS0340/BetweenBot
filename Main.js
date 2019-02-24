@@ -91,7 +91,7 @@ client.on('message', msg => {
         }
         if (command === '블랙리스트') {
             if (admin.check(msg.author.id)) {
-                msg.reply(msg);
+                msg.reply(msg, '블랙리스트 목록:');
                 for (let id of blacklist.list) {
                     msg.channel.send(id);
                 }
