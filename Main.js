@@ -26,8 +26,8 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-  if (msg.author.bot) return;
-  if (msg.channel.type === "dm") return;
+    if (msg.author.bot) return;
+    if (msg.channel.type === "dm") return;
     if(msg.content.startsWith(config.prefix)) {
         if(blacklist.check((msg.author.id))) {
             reply(msg, '당신은 이 봇을 쓸 수 없습니다!');
@@ -109,57 +109,57 @@ client.on('message', msg => {
                 reply(msg,`: ${config.prefix}밴 유저맨션 사유`);
                 return;
             }
+        }
+
+        let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+        if(!bUser) return errors.cantfindUser(msg.channel);
+        if(bUser.id === client.user.id) return errors.botuser(msg);
+        let bReason = args.join(" ").slice(22);
+        if(!bReason) return errors.noReason(msg.channel);
+
+        let banEmbed = new Discord.RichEmbed()
+            .setDescription("밴")
+            .setColor(`${config.color}`)
+            .addField("밴 유저", `${bUser} 와 아이디 ${bUser.id}`)
+            .addField("밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
+            .addField("밴된 채널", msg.channel)
+            .addField("시간", msg.createdAt)
+            .addField("사유", bReason);
+
+        reply(msg, bUser).ban(bReason);
+        reply(msg, banEmbed);
     }
+    if(command.startsWith('clear')) {
 
- let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
- if(!bUser) return errors.cantfindUser(msg.channel);
- if(bUser.id === client.user.id) return errors.botuser(msg); 
- let bReason = args.join(" ").slice(22);
- if(!bReason) return errors.noReason(msg.channel);
-    
- let banEmbed = new Discord.RichEmbed()
- .setDescription("밴")
- .setColor(`${config.color}`)
- .addField("밴 유저", `${bUser} 와 아이디 ${bUser.id}`)
- .addField("밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
- .addField("밴된 채널", msg.channel)
- .addField("시간", msg.createdAt)
- .addField("사유", bReason);
+        if(!args[0]) return msg.reply("숫자를 써주세요");
+        message.channel.bulkDelete(args[0]).then(() => {
+            reply(msg, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
+        });
+    }
+    if(command.startsWith('언밴')) {
+        if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
+        if(args[0] === "help"){
+            reply(msg,`: ${config.prefix}언밴 유저맨션 사유`);
+            return;
+        }
 
- reply(msg, bUser).ban(bReason);
- reply(msg, banEmbed);
-}
-  if(command.startsWith('clear')) {    
- 
-    if(!args[0]) return msg.reply("숫자를 써주세요");
-    message.channel.bulkDelete(args[0]).then(() => {
-     reply(msg, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
-  });
-  }
- if(command.startsWith('언밴')) {  
- if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
- if(args[0] == "help"){
- reply(msg,`: ${config.prefix}언밴 유저맨션 사유`);
-   return;
- }
+        let unbUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+        if(!unbUser) return errors.cantfindUser(msg.channel);
+        if(unbUser.id === client.user.id) return errors.botuser(msg);
+        let unbReason = args.join(" ").slice(22);
+        if(!unbReason) return errors.noReason(msg.channel);
 
- let unbUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
- if(!unbUser) return errors.cantfindUser(msg.channel);
- if(unbUser.id === client.user.id) return errors.botuser(msg); 
- let unbReason = args.join(" ").slice(22);
- if(!unbReason) return errors.noReason(msg.channel);
-    
- let unbanEmbed = new Discord.RichEmbed()
- .setDescription("언밴")
- .setColor(`${config.color}`)
- .addField("언밴 유저", `${unbUser} 와 아이디 ${unbUser.id}`)
- .addField("언밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
- .addField("시간", msg.createdAt)
- .addField("사유", unbReason);
+        let unbanEmbed = new Discord.RichEmbed()
+            .setDescription("언밴")
+            .setColor(`${config.color}`)
+            .addField("언밴 유저", `${unbUser} 와 아이디 ${unbUser.id}`)
+            .addField("언밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
+            .addField("시간", msg.createdAt)
+            .addField("사유", unbReason);
 
- msg.guild.unban(unbUser);
- reply(msg, unbanEmbed);
-}
+        msg.guild.unban(unbUser);
+        reply(msg, unbanEmbed);
+    }
 });
 
 client.login(config.token);
