@@ -33,7 +33,7 @@ client.on('message', msg => {
             reply(msg, '당신은 이 봇을 쓸 수 없습니다!');
             return;
         }
-        let args = message.content.split(" ");
+        let args = msg.content.split(" ");
         let command = msg.content.substring(config.prefix.length, msg.content.length);
         if (command === '핑') {
             msg.reply('**' + Math.round(client.ping) + 'ms!**');
@@ -103,13 +103,13 @@ client.on('message', msg => {
                 reply(msg, '권한이 없습니다!');
             }
         }
+        if(command.startsWith('밴')) {
+            if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
+            if(args[0] === "help") {
+                reply(msg,`: ${config.prefix}밴 유저맨션 사유`);
+                return;
+            }
     }
-if(command.startsWith('밴')) {  
- if(!msg.member.hasPermission("BAN_MEMBERS")) return ;
- if(args[0] == "help"){
- reply(msg,`: ${config.prefix}밴 유저맨션 사유`);
-   return;
- }
 
  let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
  if(!bUser) return errors.cantfindUser(msg.channel);
