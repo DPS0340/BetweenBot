@@ -29,7 +29,7 @@ client.on('ready', () => {
 client.on('message', msg => {
     if (msg.author.bot) return;
     if (msg.channel.type === "dm") return;
-    if(msg.content.startsWith(config.prefix)) {
+    if (msg.content.startsWith(config.prefix)) {
         if (blacklist.check((msg.author.id))) {
             reply(msg, '당신은 이 봇을 쓸 수 없습니다!');
             return;
@@ -146,7 +146,6 @@ client.on('message', msg => {
             if (unbUser.id === client.user.id) return errors.botuser(msg);
             let unbReason = args.join(" ").slice(22);
             if (!unbReason) return errors.noReason(msg.channel);
-
             let unbanEmbed = new Discord.RichEmbed()
                 .setDescription("언밴")
                 .setColor(`${config.color}`)
@@ -154,11 +153,9 @@ client.on('message', msg => {
                 .addField("언밴한 유저", `<@${msg.author.id}> 와 아이디 ${msg.author.id}`)
                 .addField("시간", msg.createdAt)
                 .addField("사유", unbReason);
-
             msg.guild.unban(unbUser);
             reply(msg, unbanEmbed);
         }
-
         if (command.startsWith('userinfo')) {
             let embed = new Discord.RichEmbed()
                 .setAuthor(`User Information`)
