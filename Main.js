@@ -6,6 +6,8 @@ const admin = require('./admin');
 const blacklist = require('./blacklist');
 const client = new Discord.Client();
 const web = require('./BetweenBot-Web/app');
+const token = require('./token');
+
 const webapp = web.app;
 
 web.run();
@@ -202,6 +204,32 @@ client.on('message', msg => {
                 .addField("Channel", msg.guild.channels.size)
                 .addField("ID", msg.guild.id);
             msg.channel.send(serverembed);
+        }
+        if (command === '웹토큰') {
+            if (admin.check(msg.author.id)) {
+                msg.reply(token.generate());
+            } else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
+        if (command.startsWith('웹토큰 리보크')) {
+            if (admin.check(msg.author.id)) {
+                token.revoke(args[2]);
+                reply(msg, "토큰 리보크 완료!");
+            } else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
+        if (command.startsWith('웹토큰 확인')) {
+            if (admin.check(msg.author.id)) {
+                if(token.checkToken(args[2])) {
+                    reply(msg, "이 토큰은 유효합니다!");
+                } else {
+                    reply(msg, "이 토큰은 유효하지 않습니다!");
+                }
+            } else {
+                reply(msg, '권한이 없습니다!');
+            }
         }
     }
 });
