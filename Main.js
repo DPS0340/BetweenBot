@@ -26,6 +26,8 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
+  if (msg.author.bot) return;
+  if (msg.channel.type === "dm") return;
     if(msg.content.startsWith(config.prefix)) {
         if(blacklist.check((msg.author.id))) {
             reply(msg, '당신은 이 봇을 쓸 수 없습니다!');
