@@ -124,7 +124,7 @@ client.on('message', msg => {
 
             reply(msg, bUser.tag);
             msg.guild.ban(bUser);
-            msg.channel.send({embed: banEmbed});
+            msg.channel.send(banEmbed);
         }
         if (command.startsWith('clear')) {
             if (!args[0]) return msg.reply("숫자를 써주세요");
