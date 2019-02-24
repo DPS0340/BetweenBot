@@ -123,7 +123,19 @@ if(command.startsWith('밴')) {
  message.guild.member(bUser).ban(bReason);
  message.channel.send(banEmbed);
 }
-
+ if (command.startsWith("serverlist")) {
+    let string = '';
+    client.guilds.forEach(guild => {
+      string += guild.name + '\n';
+    })
+    let bt = bot.user.username;
+    let botembed = new Discord.RichEmbed()
+      .setColor("#000FF")
+      .addField("서버 이름: ", string)
+      .setTimestamp()
+      .setFooter(message.author.username, message.author.avatarURL);
+    message.channel.send(botembed);
+  }
 });
 
 client.login(config.token);
