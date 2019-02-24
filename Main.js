@@ -34,8 +34,8 @@ client.on('message', msg => {
             reply(msg, '당신은 이 봇을 쓸 수 없습니다!');
             return;
         }
-        let args = msg.content.split(" ");
         let command = msg.content.substring(config.prefix.length, msg.content.length);
+        let args = command.split(" ");
         if (command === '핑') {
             msg.reply('**' + Math.round(client.ping) + 'ms!**');
         }
@@ -103,11 +103,11 @@ client.on('message', msg => {
                 reply(msg, '권한이 없습니다!');
                 return;
             }
-            if (args[0] === "help") {
+            if (args[1] === "help") {
                 reply(msg, `: ${config.prefix}밴 유저맨션 사유`);
                 return;
             }
-            let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+            let bUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
             if (!bUser) return errors.cantfindUser(msg.channel);
             if (bUser.id === client.user.id) return errors.botuser(msg);
             let bReason = args.join(" ").slice(22);
@@ -127,9 +127,9 @@ client.on('message', msg => {
             msg.channel.send(banEmbed);
         }
         if (command.startsWith('clear')) {
-            if (!args[0]) return msg.reply("숫자를 써주세요");
-            msg.channel.bulkDelete(args[0]).then(() => {
-                reply(msg, `메세지 ${args[0]} 만큼 삭제했습니다.`).then(msg => msg.delete(2000));
+            if (!args[1]) return msg.reply("숫자를 써주세요");
+            msg.channel.bulkDelete(args[1] + 1).then(() => {
+                reply(msg, `메세지 ${args[1]} 만큼 삭제했습니다.`);
             });
         }
         if (command.startsWith('언밴')) {
@@ -137,11 +137,11 @@ client.on('message', msg => {
                 reply(msg, '권한이 없습니다!');
                 return;
             }
-            if (args[0] === "help") {
+            if (args[1] === "help") {
                 reply(msg, `: ${config.prefix}언밴 유저맨션 사유`);
                 return;
             }
-            let unbUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+            let unbUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
             if (!unbUser) return errors.cantfindUser(msg.channel);
             if (unbUser.id === client.user.id) return errors.botuser(msg);
             let unbReason = args.join(" ").slice(22);
@@ -160,29 +160,29 @@ client.on('message', msg => {
             let embed = new Discord.RichEmbed()
                 .setAuthor(`User Information`)
                 .setColor('#1e90ff')
-                .setAuthor(message.author.username)
-                .setDescription(`${message.author.username}님의 정보입니다!`)
-                .setThumbnail(message.author.displayAvatarURL)
-                .addField('Name:', ` ${message.author.username}#${message.author.discriminator} `)
-                .addField('ID:', `${message.author.id}`)
-                .addField('Creation date:', message.author.createdAt);
+                .setAuthor(msg.author.username)
+                .setDescription(`${msg.author.username}님의 정보입니다!`)
+                .setThumbnail(msg.author.displayAvatarURL)
+                .addField('Name:', `${msg.author.tag}`)
+                .addField('ID:', `${msg.author.id}`)
+                .addField('Creation date:', msg.author.createdAt);
             msg.channel.send(embed);
         }
 
-        if (command.startsWith('serverinfo')) {
-            let sicon = message.guild.iconURL;
+        if (command === 'serverinfo') {
+            let sicon = msg.guild.iconURL;
             let serverembed = new Discord.RichEmbed()
                 .setDescription("Server Information")
                 .setColor("#1e90ff")
                 .setThumbnail(sicon)
-                .addField("Server Name", message.guild.name)
-                .addField("Created On", message.guild.createdAt)
-                .addField("You Joined", message.member.joinedAt)
-                .addField("Total Members", message.guild.memberCount)
-                .addField("Roles", message.guild.roles)
-                .addField("Owner", message.guild.owner)
-                .addField("Channel", message.guild.channels / message.guild.voiceChannel)
-                .addField("ID", message.guild.id);
+                .addField("Server Name", msg.guild.name)
+                .addField("Created On", msg.guild.createdAt)
+                .addField("You Joined", msg.member.joinedAt)
+                .addField("Total Members", msg.guild.memberCount)
+                .addField("Roles", msg.guild.roles.reduce((role, result) => result += role + ' '))
+                .addField("Owner", msg.guild.owner)
+                .addField("Channel", msg.guild.channels.size)
+                .addField("ID", msg.guild.id);
             msg.channel.send(serverembed);
         }
     }
