@@ -170,11 +170,10 @@ client.on('message', msg => {
         }
 
         if (command === 'serverinfo') {
-            let sicon = msg.guild.iconURL;
             let serverembed = new Discord.RichEmbed()
                 .setDescription("Server Information")
                 .setColor("#1e90ff")
-                .setThumbnail(sicon)
+                .setThumbnail(msg.guild.iconURL)
                 .addField("Server Name", msg.guild.name)
                 .addField("Created On", msg.guild.createdAt)
                 .addField("You Joined", msg.member.joinedAt)
