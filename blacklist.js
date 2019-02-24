@@ -1,6 +1,10 @@
 const filehandler = require('./filehandler');
 
-exports.list = require('./data/blacklist.json');
+try {
+    exports.list = require('./data/blacklist.json');
+} catch (e) {
+    exports.list = [];
+}
 
 exports.save = function() {
     filehandler.saveFile('blacklist.json', JSON.stringify(exports.list));

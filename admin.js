@@ -1,6 +1,11 @@
 const filehandler = require('./filehandler');
 
-exports.list = require('./data/admins.json');
+try {
+    exports.list = require('./data/admins.json');
+} catch (e) {
+    exports.list = [];
+}
+
 
 exports.save = function() {
     filehandler.saveFile('admins.json', JSON.stringify(exports.list));
