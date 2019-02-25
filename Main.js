@@ -1,6 +1,7 @@
 let Discord = require('discord.js');
 const config = require('./botsetting.json');
 const translate = require('@vitalets/google-translate-api');
+const superagent = require("superagent");
 const filehandler = require('./filehandler');
 const admin = require('./admin');
 const blacklist = require('./blacklist');
@@ -299,6 +300,17 @@ client.on('message', msg => {
             msg.reply(`<@${tomute.id}> 을 언뮤트 했습니다`);
 
         }
+        if(command === '개') {  
+          let {body} = await superagent
+         .get(`http://random.dog/woof.json`);
+          let domgembed = new Discord.RichEmbed()
+         .setColor("#ff9900")
+         .setTitle("개 :dog:")
+         .setImage(body.url);
+         msg.channel.send(domgembed)
+         return;
+        }
+
     }
 });
 
