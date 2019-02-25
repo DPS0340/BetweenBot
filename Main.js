@@ -163,7 +163,7 @@ client.on('message', msg => {
                 .addField("시간", msg.createdAt)
                 .addField("사유", unbReason);
             msg.guild.unban(unbUser);
-            reply(msg, unbanEmbed);
+            msg.channel.send(unbanEmbed);
         }
         if (command.startsWith('userinfo')) {
             function senduserinfo(user) {
