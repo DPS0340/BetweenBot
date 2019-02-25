@@ -50,6 +50,17 @@ function send(msg, text) {
     }
 }
 
+function translateAndSendMessage(msg, destLocale, text) {
+    translate(text, {to: destLocale})
+        .then(function (res) {
+            msg.channel.send(res.text);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    return msg;
+}
+
 client.on('ready', () => {
     console.log('사이봇 실행중!');
 });
@@ -350,6 +361,11 @@ client.on('message', msg => {
                     msg.channel.send(embed);
                 }
             })
+        }
+        if(command.startsWith('번역')) {
+            let destLocale = args[1];
+            let originalText = command.substring(command.indexOf(destLocale) + destLocale.length, command.length);
+            translateAndSendMessage(msg, destLocale, originalText);
         }
        if (command === 'roleinfo') {
         let role = message.mentions.roles.first() || message.guild.roles.get(args[0]) || message.guild.roles.find(role => role.name === args[0]);
