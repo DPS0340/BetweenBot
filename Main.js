@@ -300,46 +300,40 @@ client.on('message', msg => {
             msg.reply(`<@${tomute.id}> 을 언뮤트 했습니다`);
 
         }
-        if(command === '개') {  
-          let {body} = await superagent
-         .get(`http://random.dog/woof.json`);
-          let domgembed = new Discord.RichEmbed()
-         .setColor(`${config.color}`)
-         .setTitle("개 :dog:")
-         .setImage(body.url);
-         msg.channel.send(domgembed)
-         return;
+        if (command === '개') {
+            var url = `http://random.dog/woof.json`;
+            request(url, function (err, response, body) {
+                if (err) {
+                    console.log(`에러발생 \n\n \`\`\`js\n${err}\n\`\`\`\n\n`);
+                    return;
+                }
+                body = JSON.parse(body);
+                if (body.url) {
+                    var embed = new Discord.RichEmbed()
+                        .setColor(`${config.color}`)
+                        .setTimestamp()
+                        .setImage(body.url)
+                    msg.channel.send(embed);
+                }
+           })
+        } 
+        if (command === 'neko') {
+            var url = `https://nekos.life/api/v2/img/neko`;
+            request(url, function (err, response, body) {
+                if (err) {
+                    console.log(`에러발생 \n\n \`\`\`js\n${err}\n\`\`\`\n\n`);
+                    return;
+                }
+                body = JSON.parse(body);
+                if (body.url) {
+                    var embed = new Discord.RichEmbed()
+                        .setColor(`${config.color}`)
+                        .setTimestamp()
+                        .setImage(body.url)
+                    msg.channel.send(embed);
+                }
+            })
         }
-       if(command === 'neko') {  
-       let { body } = await superagent
-        .get(`https://nekos.life/api/v2/img/neko`);
-//https://nekos.life/api/v2/img/neko 네코
-//https://nekos.life/lewd  위험한 거
-//https://nekos.life/api/lewd/neko 더더 위험 한거
-         let embed= new Discord.RichEmbed()
-        .setColor(`${config.color}`)
-        .setImage(body.url)
-         msg.channel.send(embed).then(msg => {
-           msg.react('🚫').then(r => {
-            msg.react('🗑')
-//이모지 활용
-
-                const stopFilter = (reaction, user) => reaction.emoji.name === '🚫' && user.id === msg.author.id;
-                const backFilter = (reaction, user) => reaction.emoji.name === '🗑' && user.id === msg.author.id;
-
-                const backwards = msg.createReactionCollector(backFilter);
-                const stop = msg.createReactionCollector(stopFilter);
-                backwards.on('collect', r => {//이건 메세지 삭제 
-                    msg.edit(embed).then(me => me.delete()) 
-                })
-                stop.on('collect', r => {//이건 이모지를 안쓰는 
-                    backwards.stop()
-                    stop.stop()
-                    msg.clearReactions()
-                })
-
-        })
-        })
     
     }
 });
