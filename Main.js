@@ -271,7 +271,7 @@ client.on('message', msg => {
                 reply(msg, '권한이 없습니다!');
             }
         }
-                if (command === '뮤트') {
+        if (command === '뮤트') {
             let tomute = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
             if (!tomute) return msg.reply("유저를 찾을 수 없습니다");
             if (tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("당신은 권한이 없습니다");
