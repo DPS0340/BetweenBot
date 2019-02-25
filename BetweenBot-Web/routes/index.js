@@ -8,12 +8,12 @@ const tokenmodule = require('../../token');
 function guildJSONParse() {
   let guildList;
   try {
-    delete require.cache[require.resolve('./data/users.json')];
+    delete require.cache[require.resolve('../../data/users.json')];
   } catch (e) {
 
   }
   try {
-    guildList = new Map(require('./data/users.json'));
+    guildList = new Map(require('../../data/users.json'));
   } catch (e) {
     guildList = new Map();
   }
@@ -26,6 +26,19 @@ function guildJSONParse() {
     return result;
   };
   return mapToMap(guildList, innerJSONtoMap);
+}
+
+function mapToObject(map) {
+  let obj = {};
+  for (let [key, value] of map.entries()) {
+    if(value instanceof Map) {
+      obj[key] = mapToObject(value);
+    }
+    else {
+      obj[key] = value;
+    }
+  }
+  return obj;
 }
 
 // GET 부분
@@ -55,10 +68,11 @@ router.get('/logout', function(req, res, next){
 });
 
 
-router.get('/guilds', function(req, res, next) {
+router.get('/servers', function(req, res, next) {
   if (req.cookies.token) {
     if (tokenmodule.doCheckPublicToken(req.cookies.tag, req.cookies.token)) {
-      res.render('guild');
+      console.log(mapToObject(guildJSONParse()));
+      res.render('guild', {guilds: mapToObject(guildJSONParse())});
     } else {
       res.render('noPermission');
     }

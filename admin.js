@@ -17,5 +17,5 @@ const save = function() {
 };
 
 exports.check = function (id) {
-    return exports.list.contains(Number(id));
+    return exports.list.includes(Number(id));
 };
