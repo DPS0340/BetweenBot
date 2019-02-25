@@ -1,70 +1,88 @@
 const nanoid = require("nanoid");
 const filehandler = require('./filehandler');
 
-try {
-    exports.list = new Map(require('./data/token.json'));
-} catch (e) {
-    exports.list = new Map();
-}
+let list;
 
-const save = () => {
-    filehandler.saveFile('token.json', JSON.stringify([...exports.list]));
+const refresh = () => {
+    try {
+        delete require.cache[require.resolve('./data/token.json')];
+    } catch (e) {
+
+    }
+    try {
+        list = new Map(require('./data/token.json'));
+    } catch (e) {
+        list = new Map();
+    }
+    return list;
 };
 
-// exports.load = () =>  {
-//     exports.list = new Map(JSON.parse(require('./data/token.json')));
-//     return exports.list;
-// };
+const save = () => {
+    filehandler.saveFile('token.json', JSON.stringify([...list]));
+};
+
+exports.get = () => refresh();
+
 
 exports.generate = (name) => {
+    refresh();
     let token = {};
     token.publicToken = nanoid();
     token.privateToken = nanoid();
-    exports.list.set(name, token);
+    list.set(name, token);
     save();
     return token.publicToken;
 };
 
 exports.revoke = (name) => {
-    if (exports.list.has(name)) {
-        delete exports.list[name];
+    refresh();
+    if (list.has(name)) {
+        list.delete(name);
         save();
         return true;
-    }
-    else {
+    } else {
         save();
         return false;
     }
 };
 
-exports.getNames = () => exports.list.keys();
+exports.getNames = () => {
+    refresh();
+    list.keys();
+};
 
-exports.getTokens = () => exports.list.values();
+exports.getTokens = () => {
+    refresh();
+    list.values();
+};
 
 exports.checkHasToken = (name) => {
-    return exports.list.has(name);
+    refresh();
+    return list.has(name);
 };
 
 exports.doCheckPublicToken = (name, pub) => {
+    refresh();
     if(exports.checkHasToken(name)) {
-        return exports.list.get(name).publicToken === pub;
+        return list.get(name).publicToken === pub;
     } else {
         return false;
     }
 };
 
 exports.getPublicToken = (name) => {
+    refresh();
     if(exports.checkHasToken(name)) {
-        return exports.list.get(name).publicToken;
-    }
-    else {
+        return list.get(name).publicToken;
+    } else {
         return null;
     }
 };
 
 exports.getPrivateToken = (name, pub) => {
+    refresh();
     if(exports.doCheckPublicToken(name, pub)) {
-        return exports.list[name].privateToken;
+        return list[name].privateToken;
     }
     else {
         return null;
@@ -72,6 +90,6 @@ exports.getPrivateToken = (name, pub) => {
 };
 
 exports.resetTokenList = () => {
-    exports.list = new Map();
+    list = new Map();
     save();
 };

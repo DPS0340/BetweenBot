@@ -3,3 +3,10 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  if (validation)
+    p #{tag}님, 안녕하세요!
+    p 유효한 토큰으로 로그인 중입니다.
+    a(class='button' href='/logout') 로그아웃
+  else
+    p 로그인 되어있지 않습니다.
+    a(class='button' href='/login') 로그인

@@ -246,7 +246,7 @@ client.on('message', msg => {
         }
         if (command === '웹토큰 리스트') {
             if (admin.check(msg.author.id)) {
-                for (let [name, aToken] of token.list) {
+                for (let [name, aToken] of token.get()) {
                     msg.channel.send(name + " 님의 토큰은 " + aToken.publicToken + " 입니다.");
                 }
             } else {
