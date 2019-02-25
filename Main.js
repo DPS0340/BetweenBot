@@ -1,6 +1,7 @@
 let Discord = require('discord.js');
 const config = require('./botsetting.json');
 const translate = require('@vitalets/google-translate-api');
+const superagent = require("superagent");
 const filehandler = require('./filehandler');
 const admin = require('./admin');
 const blacklist = require('./blacklist');
@@ -166,7 +167,7 @@ client.on('message', msg => {
         if (command.startsWith('userinfo')) {
             function senduserinfo(user) {
                 embed.setAuthor(`User Information`)
-                    .setColor('#1e90ff')
+                    .setColor(`${config.color}`)
                     .setAuthor(user.username)
                     .setDescription(`${user.username}님의 정보입니다!`)
                     .setThumbnail(user.displayAvatarURL)
@@ -191,7 +192,7 @@ client.on('message', msg => {
         if (command === 'serverinfo') {
             let serverembed = new Discord.RichEmbed()
                 .setDescription("Server Information")
-                .setColor("#1e90ff")
+                .setColor(`${config.color}`)
                 .setThumbnail(msg.guild.iconURL)
                 .addField("Server Name", msg.guild.name)
                 .addField("Created On", msg.guild.createdAt)
@@ -269,6 +270,71 @@ client.on('message', msg => {
                 reply(msg, '권한이 없습니다!');
             }
         }
+                if (command === '뮤트') {
+            let tomute = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
+            if (!tomute) return msg.reply("유저를 찾을 수 없습니다");
+            if (tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("당신은 권한이 없습니다");
+            let muterole = msg.guild.roles.find(`name`, "muted");
+            if (!muterole) {
+                    muterole = msg.guild.createRole({
+                        name: "muted",
+                        color: "#000000",
+                        permissions: []
+                    })
+                    msg.guild.channels.forEach(async (channel, id) => {
+                         channel.overwritePermissions(muterole, {
+                            SEND_MESSAGES: false,
+                            ADD_REACTIONS: false
+                        });
+                    }); 
+                }  
+            await(tomute.addRole(muterole.id));
+            msg.reply(`<@${tomute.id}> 을 뮤트 했습니다`);
+        }
+        if (command === '언뮤트') {
+            let tomute = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
+            if (!tomute) return msg.reply("유저를 찾을 수 없습니다");
+            if (tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("당신은 권한이 없습니다");
+            let muterole = msg.guild.roles.find(`name`, "muted");
+            await(tomute.removeRole(muterole.id));
+            msg.reply(`<@${tomute.id}> 을 언뮤트 했습니다`);
+
+        }
+        if (command === '개') {
+            var url = `http://random.dog/woof.json`;
+            request(url, function (err, response, body) {
+                if (err) {
+                    console.log(`에러발생 \n\n \`\`\`js\n${err}\n\`\`\`\n\n`);
+                    return;
+                }
+                body = JSON.parse(body);
+                if (body.url) {
+                    var embed = new Discord.RichEmbed()
+                        .setColor(`${config.color}`)
+                        .setTimestamp()
+                        .setImage(body.url)
+                    msg.channel.send(embed);
+                }
+           })
+        } 
+        if (command === 'neko') {
+            var url = `https://nekos.life/api/v2/img/neko`;
+            request(url, function (err, response, body) {
+                if (err) {
+                    console.log(`에러발생 \n\n \`\`\`js\n${err}\n\`\`\`\n\n`);
+                    return;
+                }
+                body = JSON.parse(body);
+                if (body.url) {
+                    var embed = new Discord.RichEmbed()
+                        .setColor(`${config.color}`)
+                        .setTimestamp()
+                        .setImage(body.url)
+                    msg.channel.send(embed);
+                }
+            })
+        }
+    
     }
 });
 
