@@ -302,7 +302,7 @@ client.on('message', msg => {
 
         }
         if (command === '개') {
-            var url = `http://random.dog/woof.json`;
+            let url = `http://random.dog/woof.json`;
             request(url, function (err, response, body) {
                 if (err) {
                     console.log(`에러발생 \n\n \`\`\`js\n${err}\n\`\`\`\n\n`);
@@ -310,10 +310,10 @@ client.on('message', msg => {
                 }
                 body = JSON.parse(body);
                 if (body.url) {
-                    var embed = new Discord.RichEmbed()
+                    let embed = new Discord.RichEmbed()
                         .setColor(`${config.color}`)
                         .setTimestamp()
-                        .setImage(body.url)
+                        .setImage(body.url);
                     msg.channel.send(embed);
                 }
            })
