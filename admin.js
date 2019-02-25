@@ -1,6 +1,11 @@
 const filehandler = require('./filehandler');
 
 try {
+    delete require.cache[require.resolve('./data/admins.json')];
+} catch (e) {
+
+}
+try {
     exports.list = require('./data/admins.json');
 } catch (e) {
     exports.list = [];
@@ -12,9 +17,5 @@ const save = function() {
 };
 
 exports.check = function (id) {
-    if(exports.list.indexOf(Number(id)) === -1) {
-        return false;
-    } else {
-        return true;
-    }
+    return exports.list.contains(Number(id));
 };

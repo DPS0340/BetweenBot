@@ -253,6 +253,22 @@ client.on('message', msg => {
                 reply(msg, '권한이 없습니다!');
             }
         }
+        if (command === '사용자 목록') {
+            if (admin.check(msg.author.id)) {
+                let guildList = new Map();
+                client.guilds.forEach(guild => {
+                    let guildToStore = new Map();
+                    guild.members.forEach(member => {
+                        guildToStore.set(member.displayName, member.id);
+                    });
+                    console.log(guildToStore);
+                    guildList.set(guild.name,  JSON.stringify([...guildToStore]));
+                });
+                filehandler.saveFile('users.json', JSON.stringify([...guildList]));
+            } else {
+                reply(msg, '권한이 없습니다!');
+            }
+        }
     }
 });
 

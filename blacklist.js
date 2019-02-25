@@ -1,6 +1,11 @@
 const filehandler = require('./filehandler');
 
 try {
+    delete require.cache[require.resolve('./data/blacklist.json')];
+} catch (e) {
+
+}
+try {
     exports.list = require('./data/blacklist.json');
 } catch (e) {
     exports.list = [];

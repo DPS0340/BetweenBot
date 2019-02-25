@@ -2,6 +2,30 @@ const express = require('express');
 const router = express.Router();
 const tokenmodule = require('../../token');
 
+
+function guildJSONParse() {
+  let guildList;
+  try {
+    delete require.cache[require.resolve('./data/users.json')];
+  } catch (e) {
+
+  }
+  try {
+    guildList = new Map(require('./data/users.json'));
+  } catch (e) {
+    guildList = new Map();
+  }
+  const innerJSONtoMap = (JSONStr) => new Map(JSON.parse(JSONStr));
+  const mapToMap = (map, func) => {
+    let result = new Map();
+    for (let [key, value] of map.entries()) {
+      result.set(key, func(value));
+    }
+    return result;
+  };
+  return mapToMap(guildList, innerJSONtoMap);
+}
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if (req.cookies.token) {
