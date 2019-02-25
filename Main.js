@@ -33,17 +33,6 @@ function reply(msg, text) {
     }
 }
 
-function translateAndSendMessage(msg, destLocale, text) {
-    translate(text, {to: destLocale})
-        .then(function (res) {
-            msg.channel.send(res.text);
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    return msg;
-}
-
 
 client.on('ready', () => {
     console.log('사이봇 실행중!');
@@ -346,11 +335,20 @@ client.on('message', msg => {
                 }
             })
         }
-        if(command.startsWith('번역')) {
-            let destLocale = args[1];
-            let originalText = command.substring(command.indexOf(destLocale) + destLocale.length, command.length);
-            translateAndSendMessage(msg, destLocale, originalText);
-        }
+       if (command === 'roleinfo') {
+        let role = message.mentions.roles.first() || message.guild.roles.get(args[0]) || message.guild.roles.find(role => role.name === args[0]);
+        if (!role) role = message.member.highestRole;
+        let embed = new Discord.RichEmbed()
+           .setColor(role.hexColor)
+           .setTitle(`역할: ${role.name}`)
+           .addField('멤버', role.members.size, true)
+           .addField('Hex', role.hexColor, true)
+           .addField('만든 날짜', role.createdAt.toDateString(), true)
+           .addField('편집한 날짜', role.editable.toString(), true)
+           .addField('관리', role.managed.toString(), true)
+           .addField('아이디', role.id, true);
+        msg.channel.send(embed);
+       }
     }
 });
 
