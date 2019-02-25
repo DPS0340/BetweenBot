@@ -167,7 +167,7 @@ client.on('message', msg => {
         if (command.startsWith('userinfo')) {
             function senduserinfo(user) {
                 embed.setAuthor(`User Information`)
-                    .setColor('#1e90ff')
+                    .setColor(`${config.color}`)
                     .setAuthor(user.username)
                     .setDescription(`${user.username}님의 정보입니다!`)
                     .setThumbnail(user.displayAvatarURL)
@@ -192,7 +192,7 @@ client.on('message', msg => {
         if (command === 'serverinfo') {
             let serverembed = new Discord.RichEmbed()
                 .setDescription("Server Information")
-                .setColor("#1e90ff")
+                .setColor(`${config.color}`)
                 .setThumbnail(msg.guild.iconURL)
                 .addField("Server Name", msg.guild.name)
                 .addField("Created On", msg.guild.createdAt)
@@ -304,13 +304,43 @@ client.on('message', msg => {
           let {body} = await superagent
          .get(`http://random.dog/woof.json`);
           let domgembed = new Discord.RichEmbed()
-         .setColor("#ff9900")
+         .setColor(`${config.color}`)
          .setTitle("개 :dog:")
          .setImage(body.url);
          msg.channel.send(domgembed)
          return;
         }
+       if(command === 'neko') {  
+       let { body } = await superagent
+        .get(`https://nekos.life/api/v2/img/neko`);
+//https://nekos.life/api/v2/img/neko 네코
+//https://nekos.life/lewd  위험한 거
+//https://nekos.life/api/lewd/neko 더더 위험 한거
+         let embed= new Discord.RichEmbed()
+        .setColor(`${config.color}`)
+        .setImage(body.url)
+         msg.channel.send(embed).then(msg => {
+           msg.react('🚫').then(r => {
+            msg.react('🗑')
+//이모지 활용
 
+                const stopFilter = (reaction, user) => reaction.emoji.name === '🚫' && user.id === msg.author.id;
+                const backFilter = (reaction, user) => reaction.emoji.name === '🗑' && user.id === msg.author.id;
+
+                const backwards = msg.createReactionCollector(backFilter);
+                const stop = msg.createReactionCollector(stopFilter);
+                backwards.on('collect', r => {//이건 메세지 삭제 
+                    msg.edit(embed).then(me => me.delete()) 
+                })
+                stop.on('collect', r => {//이건 이모지를 안쓰는 
+                    backwards.stop()
+                    stop.stop()
+                    msg.clearReactions()
+                })
+
+        })
+        })
+    
     }
 });
 
