@@ -3,6 +3,8 @@ const router = express.Router();
 const tokenmodule = require('../../token');
 
 
+// 함수 부분
+
 function guildJSONParse() {
   let guildList;
   try {
@@ -26,7 +28,8 @@ function guildJSONParse() {
   return mapToMap(guildList, innerJSONtoMap);
 }
 
-/* GET home page. */
+// GET 부분
+
 router.get('/', function(req, res, next) {
   if (req.cookies.token) {
     if (tokenmodule.doCheckPublicToken(req.cookies.tag, req.cookies.token)) {
@@ -50,6 +53,21 @@ router.get('/logout', function(req, res, next){
   }
   res.redirect('/');
 });
+
+
+router.get('/guilds', function(req, res, next) {
+  if (req.cookies.token) {
+    if (tokenmodule.doCheckPublicToken(req.cookies.tag, req.cookies.token)) {
+      res.render('guild');
+    } else {
+      res.render('noPermission');
+    }
+  } else {
+    res.render('noPermission');
+  }
+});
+
+// POST 부분
 
 router.post('/login', function(req, res, next){
   const tag = req.body.tag;
