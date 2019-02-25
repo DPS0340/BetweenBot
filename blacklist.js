@@ -1,28 +1,38 @@
 const filehandler = require('./filehandler');
 
-try {
-    delete require.cache[require.resolve('./data/blacklist.json')];
-} catch (e) {
+let list;
+const refresh = () => {
+    try {
+        delete require.cache[require.resolve('./data/blacklist.json')];
+    } catch (e) {
 
-}
-try {
-    exports.list = require('./data/blacklist.json');
-} catch (e) {
-    exports.list = [];
-}
+    }
+    try {
+        list = require('./data/blacklist.json');
+    } catch (e) {
+        list = [];
+    }
+    return list;
+};
+
+exports.get = () => refresh();
+
 
 const save = () => {
     filehandler.saveFile('blacklist.json', JSON.stringify(exports.list));
 };
 
 exports.add = (id) => {
-    exports.list.push(id);
+    refresh();
+    list.push(Number(id));
     save();
 };
 
 exports.remove = (id) => {
-    if(exports.list.contains(id)) {
-        exports.list = exports.list.filter(id => notblacklistid !== id);
+    refresh();
+    id = Number(id);
+    if (list.contains(id)) {
+        list = list.filter(guessNotBlackList => guessNotBlackList !== id);
         save();
         return true;
     }
@@ -32,9 +42,6 @@ exports.remove = (id) => {
 };
 
 exports.check = function (id) {
-    if(exports.list.indexOf(Number(id)) === -1) {
-        return false;
-    } else {
-        return true;
-    }
+    refresh();
+    list.includes(Number(id));
 };

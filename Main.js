@@ -34,6 +34,7 @@ function reply(msg, text) {
 }
 
 // send 번역
+// 응용 TODO
 function send(msg, text) {
     if(locale === 'ko') {
         msg.channel.send(text);
@@ -308,7 +309,7 @@ client.on('message', msg => {
                         name: "muted",
                         color: "#000000",
                         permissions: []
-                    })
+                    });
                     msg.guild.channels.forEach(async (channel, id) => {
                          channel.overwritePermissions(muterole, {
                             SEND_MESSAGES: false,
@@ -316,7 +317,7 @@ client.on('message', msg => {
                         });
                     }); 
                 }  
-            await(tomute.addRole(muterole.id));
+            tomute.addRole(muterole.id);
             msg.reply(`<@${tomute.id}> 을 뮤트 했습니다`);
         }
         if (command === '언뮤트') {
@@ -324,7 +325,7 @@ client.on('message', msg => {
             if (!tomute) return msg.reply("유저를 찾을 수 없습니다");
             if (tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("당신은 권한이 없습니다");
             let muterole = msg.guild.roles.find(`name`, "muted");
-            await(tomute.removeRole(muterole.id));
+            tomute.removeRole(muterole.id);
             msg.reply(`<@${tomute.id}> 을 언뮤트 했습니다`);
 
         }
@@ -345,7 +346,7 @@ client.on('message', msg => {
                 }
            })
         } 
-        if (command === 'neko') {
+        if (command === '네코') {
             let url = `https://nekos.life/api/v2/img/neko`;
             request(url, function (err, response, body) {
                 if (err) {
@@ -367,18 +368,18 @@ client.on('message', msg => {
             let originalText = command.substring(command.indexOf(destLocale) + destLocale.length, command.length);
             translateAndSendMessage(msg, destLocale, originalText);
         }
-       if (command === 'roleinfo') {
+       if (command.startsWith('roleinfo')) {
         let role = msg.mentions.roles.first() || msg.guild.roles.get(args[1]) || msg.guild.roles.find(role => role.name === args[1]);
-        if (!role) role = message.member.highestRole;
+        if (!role) role = msg.member.highestRole;
         let embed = new Discord.RichEmbed()
            .setColor(role.hexColor)
            .setTitle(`역할: ${role.name}`)
-           .addField('멤버', role.members.size, true)
-           .addField('Hex', role.hexColor, true)
-           .addField('만든 날짜', role.createdAt.toDateString(), true)
-           .addField('편집한 날짜', role.editable.toString(), true)
-           .addField('관리', role.managed.toString(), true)
-           .addField('아이디', role.id, true);
+           .addField('멤버', role.members.size)
+           .addField('Hex', role.hexColor)
+           .addField('만든 날짜', role.createdAt.toDateString())
+           .addField('편집 가능 여부', role.editable.toString())
+           .addField('관리 권한', role.managed.toString())
+           .addField('아이디', role.id);
         msg.channel.send(embed);
        }
     }

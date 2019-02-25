@@ -19,3 +19,5 @@ const save = function() {
 exports.check = function (id) {
     return exports.list.includes(Number(id));
 };
+
+// 관리 TODO

@@ -5,7 +5,8 @@ html
         link(rel='stylesheet', href='/stylesheets/style.css')
 body
     block content
-        each val, index in (guilds)
-            li= "서버: " + index
-                each semival, semiindex in val
-                    li= semiindex + ": " + semival
+        each server, servername in (guilds)
+            li= "서버: " + servername
+                each id, name in server
+                    li= name + ": " + id
+                    // 사용자 관리 TODO
