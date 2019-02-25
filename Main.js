@@ -8,6 +8,7 @@ const blacklist = require('./blacklist');
 const client = new Discord.Client();
 const web = require('./BetweenBot-Web/app');
 const token = require('./token');
+const request = require('request');
 
 const webapp = web.app;
 
@@ -318,7 +319,7 @@ client.on('message', msg => {
            })
         } 
         if (command === 'neko') {
-            var url = `https://nekos.life/api/v2/img/neko`;
+            let url = `https://nekos.life/api/v2/img/neko`;
             request(url, function (err, response, body) {
                 if (err) {
                     console.log(`에러발생 \n\n \`\`\`js\n${err}\n\`\`\`\n\n`);
@@ -326,10 +327,10 @@ client.on('message', msg => {
                 }
                 body = JSON.parse(body);
                 if (body.url) {
-                    var embed = new Discord.RichEmbed()
+                    let embed = new Discord.RichEmbed()
                         .setColor(`${config.color}`)
                         .setTimestamp()
-                        .setImage(body.url)
+                        .setImage(body.url);
                     msg.channel.send(embed);
                 }
             })
