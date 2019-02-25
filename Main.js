@@ -368,7 +368,7 @@ client.on('message', msg => {
             translateAndSendMessage(msg, destLocale, originalText);
         }
        if (command === 'roleinfo') {
-        let role = message.mentions.roles.first() || message.guild.roles.get(args[0]) || message.guild.roles.find(role => role.name === args[0]);
+        let role = msg.mentions.roles.first() || msg.guild.roles.get(args[1]) || msg.guild.roles.find(role => role.name === args[1]);
         if (!role) role = message.member.highestRole;
         let embed = new Discord.RichEmbed()
            .setColor(role.hexColor)
