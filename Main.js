@@ -269,6 +269,36 @@ client.on('message', msg => {
                 reply(msg, '권한이 없습니다!');
             }
         }
+                if (command === '뮤트') {
+            let tomute = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
+            if (!tomute) return msg.reply("유저를 찾을 수 없습니다");
+            if (tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("당신은 권한이 없습니다");
+            let muterole = msg.guild.roles.find(`name`, "muted");
+            if (!muterole) {
+                    muterole = msg.guild.createRole({
+                        name: "muted",
+                        color: "#000000",
+                        permissions: []
+                    })
+                    msg.guild.channels.forEach(async (channel, id) => {
+                         channel.overwritePermissions(muterole, {
+                            SEND_MESSAGES: false,
+                            ADD_REACTIONS: false
+                        });
+                    }); 
+                }  
+            await(tomute.addRole(muterole.id));
+            msg.reply(`<@${tomute.id}> 을 뮤트 했습니다`);
+        }
+        if (command === '언뮤트') {
+            let tomute = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[1]));
+            if (!tomute) return msg.reply("유저를 찾을 수 없습니다");
+            if (tomute.hasPermission("MANAGE_MESSAGES")) return msg.reply("당신은 권한이 없습니다");
+            let muterole = msg.guild.roles.find(`name`, "muted");
+            await(tomute.removeRole(muterole.id));
+            msg.reply(`<@${tomute.id}> 을 언뮤트 했습니다`);
+
+        }
     }
 });
 
