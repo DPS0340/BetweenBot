@@ -33,6 +33,22 @@ function reply(msg, text) {
     }
 }
 
+// send 번역
+function send(msg, text) {
+    if(locale === 'ko') {
+        msg.channel.send(text);
+        return msg;
+    } else {
+        translate(text, {to: locale})
+            .then(function (res) {
+                msg.channel.send(res.text);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        return msg;
+    }
+}
 
 client.on('ready', () => {
     console.log('사이봇 실행중!');
