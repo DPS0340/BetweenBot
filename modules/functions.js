@@ -386,13 +386,13 @@ module.exports = {
         body = JSON.parse(body);
         if (body.result) {
             if (body.temp, body.time) {
-                 embed = new Discord.RichEmbed()
+                 let embed = new Discord.RichEmbed()
                     .setColor(`${config.color}`)
                     .setTimestamp()
                     .setTitle("한강 물 온도")
                     .setURL("https://www.wpws.kr/hangang/")
                     .addField("물 온도", body.temp, true)
-                    .addField(`최종 확인 시간`, body.time, true)
+                    .addField(`최종 확인 시간`, body.time, true);
                 msg.channel.send(embed);
             }   
           }
