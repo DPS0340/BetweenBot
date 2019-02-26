@@ -399,7 +399,7 @@ module.exports = {
        })
      },
        '채널 추가': (msg, command) => {
-        if (!msg.member.hasPermission("MANAGE_MESSAGES")) {
+        if (!msg.member.hasPermission("MANAGE_CHANNELS")) {
             reply(msg, '권한이 없습니다!');
             return;
           }
@@ -409,7 +409,7 @@ module.exports = {
             .catch(console.error);
       },
       '길드 수정': (msg, command) => {
-        if (!msg.member.hasPermission("MANAGE_MESSAGES")) {
+        if (!msg.member.hasPermission("MANAGE_GUILD")) {
             reply(msg, '권한이 없습니다!');
             return;
           }
@@ -417,5 +417,14 @@ module.exports = {
          msg.guild.edit({
            name: guild
          });
+    },
+    '초대링크': (msg, command) => {
+      if (!msg.member.hasPermission("CREATE_INSTANT_INVITE")) {
+           reply(msg, '권한이 없습니다!');
+          return;
+        }
+        msg.channel.createInvite()
+         .then(invite => msg.channel.send(`discord.gg/${invite.code}`))
+          .catch(console.error);
     },
 };
