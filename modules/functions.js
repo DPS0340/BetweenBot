@@ -8,6 +8,8 @@ const blacklist = require('../blacklist');
 const token = require('../token');
 const request = require('request');
 const stringhandler = require('../stringhandler');
+const Discord = require('discord.js');
+const config = require('../botsetting.json');
 
 
 let locale = filehandler.readFile('lang.txt');

@@ -1,4 +1,4 @@
-let Discord = require('discord.js');
+const Discord = require('discord.js');
 const config = require('./botsetting.json');
 const translate = require('@vitalets/google-translate-api');
 const superagent = require("superagent");
@@ -91,7 +91,6 @@ function pushStartsWithTemplate(arr, expected, func) {
 
 function loadmodules() {
     for(let dict of moduleloader.modules.values()) {
-        console.log(dict);
         for(let [name, func] of Object.entries(dict)) {
             pushStartsWithTemplate(externalFunctions, name, func);
         }
@@ -102,7 +101,6 @@ let externalFunctions = [];
 
 loadmodules();
 
-console.log(externalFunctions);
 
 client.on('ready', () => {
     console.log('사이봇 실행중!');
