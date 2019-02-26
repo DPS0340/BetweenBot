@@ -399,12 +399,20 @@ module.exports = {
        })
      },
        '채널 추가': (msg, command) => {
+        if (!msg.member.hasPermission("MANAGE_MESSAGES")) {
+            reply(msg, '권한이 없습니다!');
+            return;
+          }
          let Channel = command.split(" ")[1];
           msg.guild.createChannel(Channel, 'text')
              .then(console.log)
                .catch(console.error);
       },
       '길드 수정': (msg, command) => {
+        if (!msg.member.hasPermission("MANAGE_MESSAGES")) {
+            reply(msg, '권한이 없습니다!');
+            return;
+          }
          let guild = command.split(" ")[1];
          msg.guild.edit({
            name: guild
