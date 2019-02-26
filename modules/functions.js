@@ -386,7 +386,7 @@ module.exports = {
         body = JSON.parse(body);
         if (body.result) {
             if (body.temp, body.time) {
-                var embed = new Discord.RichEmbed()
+                 embed = new Discord.RichEmbed()
                     .setColor(`${config.color}`)
                     .setTimestamp()
                     .setTitle("한강 물 온도")
