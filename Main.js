@@ -89,7 +89,7 @@ function pushStartsWithTemplate(arr, expected, func) {
     pushFunc(arr, expected, ifCommandStartsWithExpectedRunFuncTemplate, func);
 }
 
-function loadmodules() {
+function loadModules() {
     for(let dict of moduleloader.modules.values()) {
         for(let [name, func] of Object.entries(dict)) {
             pushStartsWithTemplate(externalFunctions, name, func);
@@ -99,7 +99,7 @@ function loadmodules() {
 
 let externalFunctions = [];
 
-loadmodules();
+loadModules();
 
 
 client.on('ready', () => {
