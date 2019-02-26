@@ -377,4 +377,25 @@ module.exports = {
             reply(msg, '권한이 없습니다!');
         }
     },
+        '한강': (msg, command) => {
+        let url = 'http://hangang.dkserver.wo.tc/';
+        request(url, function (err, response, body) {
+        if (err) {
+            return msg.reply('에러');
+        }
+        body = JSON.parse(body);
+        if (body.result) {
+            if (body.temp, body.time) {
+                var embed = new Discord.RichEmbed()
+                    .setColor(`${config.color}`)
+                    .setTimestamp()
+                    .setTitle("한강 물 온도")
+                    .setURL("https://www.wpws.kr/hangang/")
+                    .addField("물 온도", body.temp, true)
+                    .addField(`최종 확인 시간`, body.time, true)
+                msg.channel.send(embed);
+            }   
+          }
+       })
+     },
 };
