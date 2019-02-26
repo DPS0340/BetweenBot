@@ -16,53 +16,7 @@ const webapp = web.app;
 
 web.run();
 
-let locale = 'ko';
 
-// reply 번역
-function reply(msg, text) {
-    if(locale === 'ko') {
-        msg.reply(text);
-        return msg;
-    } else {
-        translate(text, {to: locale})
-            .then(function (res) {
-                msg.reply(res.text);
-            })
-            .catch(err => {
-                console.error(err);
-            });
-        return msg;
-    }
-}
-
-// send 번역
-// 응용 TODO
-function send(msg, text) {
-    if(locale === 'ko') {
-        msg.channel.send(text);
-        return msg;
-    } else {
-        translate(text, {to: locale})
-            .then(function (res) {
-                msg.channel.send(res.text);
-            })
-            .catch(err => {
-                console.error(err);
-            });
-        return msg;
-    }
-}
-
-function translateAndSendMessage(msg, destLocale, text) {
-    translate(text, {to: destLocale})
-        .then(function (res) {
-            msg.channel.send(res.text);
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    return msg;
-}
 
 function prefixCheckAndIfExistsRun(prefix, msg, func) {
     if(msg.content.startsWith(prefix)) func(msg);
