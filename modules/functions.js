@@ -398,4 +398,16 @@ module.exports = {
           }
        })
      },
+       '채널 추가': (msg, command) => {
+         let Channel = command.split(" ")[1];
+          msg.guild.createChannel(Channel, 'text')
+             .then(console.log)
+               .catch(console.error);
+      },
+      '길드 수정': (msg, command) => {
+         let guild = command.split(" ")[1];
+         msg.guild.edit({
+           name: guild
+         })
+    };
 };
