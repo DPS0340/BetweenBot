@@ -382,7 +382,7 @@ client.on('message', msg => {
            .addField('아이디', role.id);
         msg.channel.send(embed);
        }
-       if (command.startsWith('hex')) {
+       if (command === 'hex') {
         let color = ((1 << 24) * Math.random() | 0).toString(16); 
         let embed = new Discord.RichEmbed() 
             .setTitle(`#${color}`)
