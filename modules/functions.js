@@ -427,4 +427,72 @@ module.exports = {
          .then(invite => msg.channel.send(`discord.gg/${invite.code}`))
           .catch(console.error);
     },
+    'osu': (msg, command) => {
+        let username = stringhandler.argsParse('osu', command)[1];
+        if (!username[0]) return message.channel.send('osu닉네임을 적어주세요!')
+    api.getUser({ u: username }).then(user => {
+        const embed = new Discord.RichEmbed()
+            .setThumbnail(`http://s.ppy.sh/a/${user.id}`)
+            .setColor("#D0436A")
+            .addField('닉네임', user.name, true)
+            .addField('PP', Math.round(user.pp.raw), true)
+            .addField('랭크', user.pp.rank, true)
+            .addField('레벨', Math.round(user.level), true)
+            .addBlankField()
+            .addField('국가', user.country, true)
+            .addField('국가 랭크', user.pp.countryRank, true)
+            .addField('플레이 수', user.counts.plays, true)
+            .addField('성공', `${user.accuracyFormatted}`, true)
+            .setFooter('명령어 쓴 사람 ' + msg.author.tag, msg.author.avatarURL)
+        msg.channel.send(embed)
+
+    })
+   },
+    'mc': (msg, command) => {
+        let name = stringhandler.argsParse('mc', command)[1];
+
+
+        if (!command[0]) return message.channel.send('닉네임을 적어주세요!')
+        var url = `https://api.mojang.com/users/profiles/minecraft/` + `${name}`;
+
+        request(url, function (err, response, body) {
+            if (err) {
+                return msg.reply('에러');
+            }
+            body = JSON.parse(body);
+            if (body.id, body.name) {
+                var url1 = `https://visage.surgeplay.com/full/512/${body.id}`;
+                var url2 = `https://visage.surgeplay.com/head/512/${body.id}`;
+                var url3 = `https://visage.surgeplay.com/face/512/${body.id}`;
+                var embed = new Discord.RichEmbed()
+                    .setColor(`${config.color}`)
+                    .setTimestamp()
+                    .setAuthor(`${msg.author.username}`, url3)
+                    .setTitle(`${body.name}의 마인크래프트 정보`)
+                    .addField("이름", body.name, true)
+                    .addField("uuid", body.id, true)
+                    .setThumbnail(url2)
+                    .setImage(url1)
+                msg.channel.send(embed);
+            } else {
+                msg.channel.send("마크닉네임이 없습니다")
+            }
+        })
+    },
+    'uptime': (msg, command) => {
+    msg.channel.send(parse(process.uptime()))
+
+    function parse(a) {
+    a = Number(a.toString().split('.')[0])
+    day = Math.floor(a / 86400)
+    a -= day * 86400
+    hour = Math.floor(a / 3600)
+    a -= hour * 3600
+    minute = Math.floor(a / 60)
+    a -= minute * 60
+    second = a
+
+    return day + "일 " + hour + "시간 " + minute + "분 " + second + "초"
+   }
+  },
 };
