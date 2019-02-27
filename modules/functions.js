@@ -530,7 +530,9 @@ module.exports = {
         function play(url) {
             ytdl.getInfo(url, {downloadURL: true}, (err, info) => {
                 if (err) throw err;
-                msg.channel.send("지금 플레이 중: " + info.title);
+               let embed = new Discord.RichEmbed()
+                embed.addField("제목", info.title)
+                msg.channel.send(embed);
             });
             msg.member.voiceChannel.join().then(connection => {
                 let streamOptions = { seek: 0, volume: 1, bitrate: 192000 };
