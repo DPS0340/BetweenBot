@@ -11,6 +11,7 @@ const stringhandler = require('../stringhandler');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const config = require('../botsetting.json');
+const melon = require('melon-chart-api');
 const osu = require('node-osu');
 const api = new osu.Api(`4b6523b6d53ded37e04033429752cfc44e841dc6`, {
     notFoundAsError: true,
@@ -515,4 +516,18 @@ module.exports = {
             reply(msg, '권한이 없습니다!');
         }
     },
+        '멜론': (msg, command) => {
+    let now = new Date()
+    now = (now.getMonth + 1) + '/' + now.getDate() + '/' + now.getFullYear
+
+    melon(now, { cutLine: 1 }).daily().then(res => {
+        res.data.forEach(item => {
+            res1 = item.rank + ' 위'
+            res6 = item.title + ' - ' + item.artist
+        })
+        let embed = new Discord.RichEmbed()
+            .addField(res1, res6, true)       
+        msg.channel.send(embed)
+    })
+   },
 };
