@@ -2,7 +2,7 @@ const ytSearch = require( 'yt-search' );
 const ytdl = require('ytdl-core');
 const Discord = require('discord.js');
 const stringhandler = require('../stringhandler');
-
+const config = require('../botsetting.json');
 module.exports = {
     'play': (msg, command) => {
         function play(url) {
