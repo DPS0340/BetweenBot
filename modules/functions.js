@@ -531,11 +531,14 @@ module.exports = {
             ytdl.getInfo(url, {downloadURL: true}, (err, info) => {
                 if (err) throw err;
                let embed = new Discord.RichEmbed()
-                embed.addField("제목", info.title)
+                embed.setTitle(info.title)
+                embed.setURL(url)
+                embed.addField('대기열에 추가 한 사람', `<@${msg.author.id}>`)
+                embed.addField('업로드 한 사람', info.author.name);
                 msg.channel.send(embed);
             });
             msg.member.voiceChannel.join().then(connection => {
-                let streamOptions = { seek: 0, volume: 1, bitrate: 192000 };
+                let streamOptions = { seek: 0, volume: 1, bitrate: 64000 };
                 const stream = ytdl(url, { filter : 'audioonly' });
                 const dispatcher = connection.playStream(stream, streamOptions);
                 dispatcher.on("end", end => {
