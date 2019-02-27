@@ -548,4 +548,15 @@ module.exports = {
 
     msg.channel.send(`지금 플레이 중: ${info.title}`);
    },
+   'kick': (msg, command) => {
+
+    if (!msg.member.hasPermission("KICK_MEMBERS")) return 
+    if (args[0] == "help") {
+        msg.reply(`${config.prefix}kick <유저 맨션>`);
+        return;
+    }
+    let kUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+    msg.guild.member(kUser).kick("없음");
+        msg.channel.send(kUser + " 유저를 성공적으로 킥 했습니다");
+  },
 };
