@@ -6,6 +6,7 @@ const api = new osu.Api(`4b6523b6d53ded37e04033429752cfc44e841dc6`, {
     completeScores: false
 });
 const stringhandler = require('../stringhandler');
+const admin = require('../admin');
 
 
 module.exports = {
