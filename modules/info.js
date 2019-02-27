@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const melon = require('melon-chart-api');
+const config = require('../botsetting.json');
 const osu = require('node-osu');
 const api = new osu.Api(`4b6523b6d53ded37e04033429752cfc44e841dc6`, {
     notFoundAsError: true,
