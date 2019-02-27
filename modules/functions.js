@@ -377,7 +377,7 @@ module.exports = {
             reply(msg, '권한이 없습니다!');
         }
     },
-        '한강': (msg, command) => {
+    '한강': (msg, command) => {
         let url = 'http://hangang.dkserver.wo.tc/';
         request(url, function (err, response, body) {
         if (err) {
