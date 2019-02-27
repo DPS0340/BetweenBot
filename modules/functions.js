@@ -17,7 +17,8 @@ const osu = require('node-osu');
 const api = new osu.Api(`4b6523b6d53ded37e04033429752cfc44e841dc6`, {
     notFoundAsError: true,
     completeScores: false
-})
+});
+const ytSearch = require( 'yt-search' )
 
 let locale = filehandler.readFile('lang.txt');
 
@@ -526,26 +527,40 @@ module.exports = {
         })
     },
     'play': (msg, command) => {
+        function play(url) {
+            ytdl.getInfo(url, {downloadURL: true}, (err, info) => {
+                if (err) throw err;
+                msg.channel.send("지금 플레이 중: " + info.title);
+            });
+            msg.member.voiceChannel.join().then(connection => {
+                const streamOptions = { seek: 0, volume: 1 };
+                const stream = ytdl(url, { filter : 'audioonly' });
+                const dispatcher = connection.playStream(stream, streamOptions);
+                dispatcher.on("end", end => {
+                    msg.channel.send("노래가 끝났습니다!");
+                    msg.member.voiceChannel.leave();
+                });
+            }).catch(err => console.log(err));
+        }
         if(!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
         if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
-        const args = stringhandler.argsParse('play', command);
-        if (!args[0]) return msg.channel.send("아직은 유튜브 링크만 됩니다");
-        let validate = ytdl.validateURL(args[0]);
-        if (!validate) return msg.channel.send("죄송하지만 이 주소는 없는 주소 입니다");
-        let info = ytdl.getInfo(args[0]);
-        msg.member.voiceChannel.join().then(connection => {
-            const streamOptions = { seek: 0, volume: 1 };
-            const stream = ytdl('https://www.youtube.com/watch?v=gOMhN-hfMtY', { filter : 'audioonly' });
-            const dispatcher = connection.playStream(stream, streamOptions);
-            dispatcher.on("end", end => {
-                msg.channel.send("노래가 끝났습니다!");
-                msg.member.voiceChannel.leave();
+        const raw = stringhandler.cutTextHead('play ', command);
+        if (!raw) return msg.channel.send("인자가 없습니다");
+        let url = raw;
+        let validate = ytdl.validateURL(url);
+        if (!validate) {
+            ytSearch(url, function ( err, r ) {
+                try {
+                    play("https://youtube.com" + r.videos[0].url);
+                } catch {
+                    msg.channel.send("검색 결과가 없습니다!");
+                }
             });
-            msg.channel.send(`지금 플레이 중: ${info.title}`);
-        }).catch(err => console.log(err));
+        } else {
+            play(url)
+        }
     },
     'exit': (msg, command) => {
-        if(!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
         if (msg.guild.me.voiceChannel) msg.member.voiceChannel.leave();
     },
     'kick': (msg, command) => {
