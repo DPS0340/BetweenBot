@@ -97,10 +97,6 @@ module.exports = {
             .setColor(`#${color}`);
         msg.channel.send({ embed: embed });
     },
-    '핑': (msg, command) => {
-        msg.reply('**' + Math.round(client.ping) + 'ms!**');
-        return true;
-    },
     '데이터 리스트': (msg, command) => {
         if (admin.check(msg.author.id)) {
             let files = filehandler.getFileList();
