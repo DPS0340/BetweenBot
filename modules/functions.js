@@ -1,5 +1,6 @@
 // 이건 아직 제대로 정리되지 않았습니다.
 // TODO
+const ytdl = require('ytdl-core');
 const translate = require('@vitalets/google-translate-api');
 const superagent = require("superagent");
 const filehandler = require('../filehandler');
