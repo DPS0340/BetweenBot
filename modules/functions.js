@@ -499,7 +499,7 @@ module.exports = {
     },
     'botinfo': (msg, command) => {
         if (admin.check(msg.author.id)) {
-            embed = new Discord.RichEmbed()
+            let embed = new Discord.RichEmbed()
                 .setTitle(`사이 봇의 정보`)
                 .setColor(`${config.color}`)
                 .addField("유저", `${client.users.size}`, true)
@@ -528,16 +528,25 @@ module.exports = {
     'play': (msg, command) => {
         if(!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
         if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
-        let args = stringhandler.argsParse('play', command);
+        const args = stringhandler.argsParse('play', command);
         if (!args[0]) return msg.channel.send("아직은 유튜브 링크만 됩니다");
         let validate = ytdl.validateURL(args[0]);
         if (!validate) return msg.channel.send("죄송하지만 이 주소는 없는 주소 입니다");
         let info = ytdl.getInfo(args[0]);
         msg.member.voiceChannel.join().then(connection => {
-            let dispatcher = connection.play(ytdl(args[0], { filter: "audioonly" }));
-            dispatcher.on("end", end => {msg.member.voiceChannel.leave()});
+            const streamOptions = { seek: 0, volume: 1 };
+            const stream = ytdl('https://www.youtube.com/watch?v=gOMhN-hfMtY', { filter : 'audioonly' });
+            const dispatcher = connection.playStream(stream, streamOptions);
+            dispatcher.on("end", end => {
+                msg.channel.send("노래가 끝났습니다!");
+                msg.member.voiceChannel.leave();
+            });
             msg.channel.send(`지금 플레이 중: ${info.title}`);
         }).catch(err => console.log(err));
+    },
+    'exit': (msg, command) => {
+        if(!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
+        if (msg.guild.me.voiceChannel) msg.member.voiceChannel.leave();
     },
     'kick': (msg, command) => {
         let args = stringhandler.argsParse('kick', command);
