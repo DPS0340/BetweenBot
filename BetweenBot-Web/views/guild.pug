@@ -6,7 +6,8 @@ html
 body
     block content
         each server, servername in (guilds)
-            li= "서버: " + servername
+            details
+                summary= "서버: " + servername
                 each id, name in server
                     li= name + ": " + id
                     // 사용자 관리 TODO
