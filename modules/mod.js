@@ -1,7 +1,7 @@
 const admin = require('../admin');
 const blacklist = require('../blacklist');
 const Discord = require('discord.js');
-
+const config = require('../botsetting.json');
 
 module.exports = {
     '어드민': (msg, command) => {
