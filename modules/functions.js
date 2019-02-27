@@ -501,7 +501,7 @@ module.exports = {
   },
     'botinfo': (msg, command) => {
         if (admin.check(msg.author.id)) {
-            var embed = new Discord.RichEmbed()
+             embed = new Discord.RichEmbed()
                 .setTitle(`사이 봇의 정보`)
                 .setColor(`${config.color}`)
                 .addField("유저", `${client.users.size}`, true)
