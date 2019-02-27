@@ -68,15 +68,15 @@ function translateAndSendMessage(msg, destLocale, text) {
 }
 
 module.exports = {
-  '어드민': (msg, command) => {
-      if (admin.check(msg.author.id)) {
-          msg.reply('당신은 어드민입니다!');
-      } else {
-          msg.reply('당신은 어드민이 아닙니다!');
-      }
-  },
+    '어드민': (msg, command) => {
+        if (admin.check(msg.author.id)) {
+            msg.reply('당신은 어드민입니다!');
+        } else {
+            msg.reply('당신은 어드민이 아닙니다!');
+        }
+    },
     '헬로': (msg, command) => {
-      msg.channel.send("헬로!");
+        msg.channel.send("헬로!");
     },
     '블랙리스트 추가': (msg, command) => {
         if (admin.check(msg.author.id)) {
@@ -387,91 +387,88 @@ module.exports = {
     '한강': (msg, command) => {
         let url = 'http://hangang.dkserver.wo.tc/';
         request(url, function (err, response, body) {
-        if (err) {
-            return msg.reply('에러');
-        }
-        body = JSON.parse(body);
-        if (body.result) {
-            if (body.temp, body.time) {
-                 let embed = new Discord.RichEmbed()
-                    .setColor(`${config.color}`)
-                    .setTimestamp()
-                    .setTitle("한강 물 온도")
-                    .setURL("https://www.wpws.kr/hangang/")
-                    .addField("물 온도", body.temp, true)
-                    .addField(`최종 확인 시간`, body.time, true);
-                msg.channel.send(embed);
-            }   
-          }
-       })
-     },
-       '채널 추가': (msg, command) => {
+            if (err) {
+                return msg.reply('에러');
+            }
+            body = JSON.parse(body);
+            if (body.result) {
+                if (body.temp, body.time) {
+                    let embed = new Discord.RichEmbed()
+                        .setColor(`${config.color}`)
+                        .setTimestamp()
+                        .setTitle("한강 물 온도")
+                        .setURL("https://www.wpws.kr/hangang/")
+                        .addField("물 온도", body.temp, true)
+                        .addField(`최종 확인 시간`, body.time, true);
+                    msg.channel.send(embed);
+                }
+            }
+        })
+    },
+    '채널 추가': (msg, command) => {
         if (!msg.member.hasPermission("MANAGE_CHANNELS")) {
             reply(msg, '권한이 없습니다!');
             return;
-          }
+        }
         let channel = stringhandler.argsParse('채널 추가', command)[0];
         msg.guild.createChannel(channel, 'text')
             .then(console.log)
             .catch(console.error);
-      },
-      '길드 수정': (msg, command) => {
+    },
+    '길드 수정': (msg, command) => {
         if (!msg.member.hasPermission("MANAGE_GUILD")) {
             reply(msg, '권한이 없습니다!');
             return;
-          }
-          let guild = stringhandler.argsParse('길드 수정', command)[0];
-         msg.guild.edit({
-           name: guild
-         });
+        }
+        let guild = stringhandler.argsParse('길드 수정', command)[0];
+        msg.guild.edit({
+            name: guild
+        });
     },
     '초대링크': (msg, command) => {
-      if (!msg.member.hasPermission("CREATE_INSTANT_INVITE")) {
-           reply(msg, '권한이 없습니다!');
-          return;
+        if (!msg.member.hasPermission("CREATE_INSTANT_INVITE")) {
+            reply(msg, '권한이 없습니다!');
+            return;
         }
         msg.channel.createInvite()
-         .then(invite => msg.channel.send(`discord.gg/${invite.code}`))
-          .catch(console.error);
+            .then(invite => msg.channel.send(`discord.gg/${invite.code}`))
+            .catch(console.error);
     },
     'osu': (msg, command) => {
-        let username = stringhandler.argsParse('osu', command)[1];
-        if (!username[0]) return message.channel.send('osu닉네임을 적어주세요!')
-    api.getUser({ u: username }).then(user => {
-        const embed = new Discord.RichEmbed()
-            .setThumbnail(`http://s.ppy.sh/a/${user.id}`)
-            .setColor("#D0436A")
-            .addField('닉네임', user.name, true)
-            .addField('PP', Math.round(user.pp.raw), true)
-            .addField('랭크', user.pp.rank, true)
-            .addField('레벨', Math.round(user.level), true)
-            .addBlankField()
-            .addField('국가', user.country, true)
-            .addField('국가 랭크', user.pp.countryRank, true)
-            .addField('플레이 수', user.counts.plays, true)
-            .addField('성공', `${user.accuracyFormatted}`, true)
-            .setFooter('명령어 쓴 사람 ' + msg.author.tag, msg.author.avatarURL)
-        msg.channel.send(embed)
+        let username = stringhandler.argsParse('osu', command)[0];
+        if (!username[0]) return message.channel.send('osu닉네임을 적어주세요!');
+        api.getUser({ u: username }).then(user => {
+            const embed = new Discord.RichEmbed()
+                .setThumbnail(`http://s.ppy.sh/a/${user.id}`)
+                .setColor("#D0436A")
+                .addField('닉네임', user.name, true)
+                .addField('PP', Math.round(user.pp.raw), true)
+                .addField('랭크', user.pp.rank, true)
+                .addField('레벨', Math.round(user.level), true)
+                .addBlankField()
+                .addField('국가', user.country, true)
+                .addField('국가 랭크', user.pp.countryRank, true)
+                .addField('플레이 수', user.counts.plays, true)
+                .addField('성공', `${user.accuracyFormatted}`, true)
+                .setFooter('명령어 쓴 사람 ' + msg.author.tag, msg.author.avatarURL)
+            msg.channel.send(embed)
 
-    })
-   },
+        })
+    },
     'mc': (msg, command) => {
-        let name = stringhandler.argsParse('mc', command)[1];
-
-
-        if (!command[0]) return message.channel.send('닉네임을 적어주세요!')
-        var url = `https://api.mojang.com/users/profiles/minecraft/` + `${name}`;
-
+        let name = stringhandler.argsParse('mc', command)[0];
+        if (!command[0]) return message.channel.send('닉네임을 적어주세요!');
+        let url = `https://api.mojang.com/users/profiles/minecraft/` + `${name}`;
         request(url, function (err, response, body) {
             if (err) {
                 return msg.reply('에러');
             }
             body = JSON.parse(body);
             if (body.id, body.name) {
-                var url1 = `https://visage.surgeplay.com/full/512/${body.id}`;
-                var url2 = `https://visage.surgeplay.com/head/512/${body.id}`;
-                var url3 = `https://visage.surgeplay.com/face/512/${body.id}`;
-                var embed = new Discord.RichEmbed()
+                let url1 = `https://visage.surgeplay.com/full/512/${body.id}`;
+                let url2 = `https://visage.surgeplay.com/head/512/${body.id}`;
+                let url3 = `https://visage.surgeplay.com/face/512/${body.id}`;
+                let embed = new Discord.RichEmbed()
                     .setColor(`${config.color}`)
                     .setTimestamp()
                     .setAuthor(`${msg.author.username}`, url3)
@@ -479,7 +476,7 @@ module.exports = {
                     .addField("이름", body.name, true)
                     .addField("uuid", body.id, true)
                     .setThumbnail(url2)
-                    .setImage(url1)
+                    .setImage(url1);
                 msg.channel.send(embed);
             } else {
                 msg.channel.send("마크닉네임이 없습니다")
@@ -487,76 +484,70 @@ module.exports = {
         })
     },
     'uptime': (msg, command) => {
-    msg.channel.send(parse(process.uptime()))
+        msg.channel.send(parse(process.uptime()));
+        function parse(a) {
+            a = Number(a.toString().split('.')[0]);
+            let day = Math.floor(a / 86400);
+            a -= day * 86400;
+            let hour = Math.floor(a / 3600);
+            a -= hour * 3600;
+            let minute = Math.floor(a / 60);
+            a -= minute * 60;
+            let second = a;
 
-    function parse(a) {
-    a = Number(a.toString().split('.')[0])
-    day = Math.floor(a / 86400)
-    a -= day * 86400
-    hour = Math.floor(a / 3600)
-    a -= hour * 3600
-    minute = Math.floor(a / 60)
-    a -= minute * 60
-    second = a
-
-    return day + "일 " + hour + "시간 " + minute + "분 " + second + "초"
-   }
-  },
+            return day + "일 " + hour + "시간 " + minute + "분 " + second + "초"
+        }
+    },
     'botinfo': (msg, command) => {
         if (admin.check(msg.author.id)) {
-             embed = new Discord.RichEmbed()
+            embed = new Discord.RichEmbed()
                 .setTitle(`사이 봇의 정보`)
                 .setColor(`${config.color}`)
                 .addField("유저", `${client.users.size}`, true)
                 .addField("서버", `${client.guilds.size}`, true)
                 .addField("순수 유저", `${client.users.filter(a => a.bot == false).size}`, true)
                 .addField("봇 개수", `${client.users.filter(a => a.bot == true).size}`, true)
-                .setTimestamp()
+                .setTimestamp();
             msg.channel.send(embed)
         } else {
             reply(msg, '권한이 없습니다!');
         }
     },
-        '멜론': (msg, command) => {
-    let now = new Date()
-    now = (now.getMonth + 1) + '/' + now.getDate() + '/' + now.getFullYear
-
-    melon(now, { cutLine: 1 }).daily().then(res => {
-        res.data.forEach(item => {
-            res1 = item.rank + ' 위'
-            res6 = item.title + ' - ' + item.artist
+    '멜론': (msg, command) => {
+        let now = new Date();
+        let embed = new Discord.RichEmbed();
+        now = (now.getMonth + 1) + '/' + now.getDate() + '/' + now.getFullYear;
+        melon(now, { cutLine: 1 }).daily().then(res => {
+            res.data.forEach(item => {
+                let res1 = item.rank + ' 위';
+                let res6 = item.title + ' - ' + item.artist;
+                embed.addField(res1, res6, true);
+            });
+            msg.channel.send(embed);
         })
-        let embed = new Discord.RichEmbed()
-            .addField(res1, res6, true)       
-        msg.channel.send(embed)
-    })
-   },
-        'play': (msg, command) => {
-   if(!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
-
+    },
+    'play': (msg, command) => {
+        if(!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
         if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
+        let args = stringhandler.argsParse('play', command);
+        if (!args[0]) return msg.channel.send("아직은 유튜브 링크만 됩니다");
+        let validate = ytdl.validateURL(args[0]);
+        if (!validate) return msg.channel.send("죄송하지만 이 주소는 없는 주소 입니다");
+        let info = ytdl.getInfo(args[0]);
+        let connection = msg.member.voiceChannel.join();
+        let dispatcher = connection.play(ytdl(args[0], { filter: "audioonly" }));
 
-    if (!command[0]) return msg.channel.send("아직은 유튜브 링크만 됩니다");
-
-    let validate = ytdl.validateURL(command[0]);
-
-    if (!validate) return msg.channel.send("죄송하지만 이 주소는 없는 주소 입니다");
-
-    let info = ytdl.getInfo(command[1]);
-    let connection = msg.member.voiceChannel.join();
-    let dispatcher = connection.play(ytdl(command[1], { filter: "audioonly" }));
-
-    msg.channel.send(`지금 플레이 중: ${info.title}`);
-   },
-   'kick': (msg, command) => {
-
-    if (!msg.member.hasPermission("KICK_MEMBERS")) return 
-    if (args[0] == "help") {
-        msg.reply(`${config.prefix}kick <유저 맨션>`);
-        return;
-    }
-    let kUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
-    msg.guild.member(kUser).kick("없음");
+        msg.channel.send(`지금 플레이 중: ${info.title}`);
+    },
+    'kick': (msg, command) => {
+        let args = stringhandler.argsParse('kick', command);
+        if (!msg.member.hasPermission("KICK_MEMBERS")) return;
+        if (args[0] === "help") {
+            msg.reply(`${config.prefix}kick <유저 맨션>`);
+            return;
+        }
+        let kUser = msg.guild.member(msg.mentions.users.first() || msg.guild.members.get(args[0]));
+        msg.guild.member(kUser).kick("없음");
         msg.channel.send(kUser + " 유저를 성공적으로 킥 했습니다");
-  },
+    },
 };
