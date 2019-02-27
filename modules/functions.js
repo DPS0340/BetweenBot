@@ -499,4 +499,19 @@ module.exports = {
     return day + "일 " + hour + "시간 " + minute + "분 " + second + "초"
    }
   },
+    'botinfo': (msg, command) => {
+        if (admin.check(msg.author.id)) {
+            var embed = new Discord.RichEmbed()
+                .setTitle(`사이 봇의 정보`)
+                .setColor(`${config.color}`)
+                .addField("유저", `${client.users.size}`, true)
+                .addField("서버", `${client.guilds.size}`, true)
+                .addField("순수 유저", `${client.users.filter(a => a.bot == false).size}`, true)
+                .addField("봇 개수", `${client.users.filter(a => a.bot == true).size}`, true)
+                .setTimestamp()
+            msg.channel.send(embed)
+        } else {
+            reply(msg, '권한이 없습니다!');
+        }
+    },
 };
