@@ -564,6 +564,15 @@ module.exports = {
         } else {
             play(url)
         }
+            'np': (msg, command) => {
+            ytdl.getInfo(url, { downloadURL: true }, (err, info) => {
+                if (err) throw err;
+                let embed = new Discord.RichEmbed()
+                embed.setTitle(info.title)
+                embed.setURL(url)
+                embed.addField('업로드 한 사람', info.author.name);
+                msg.channel.send(embed);
+            });
     },
     'exit': (msg, command) => {
         if (msg.guild.me.voiceChannel) msg.member.voiceChannel.leave();
