@@ -530,4 +530,21 @@ module.exports = {
         msg.channel.send(embed)
     })
    },
+        'play': (msg, command) => {
+   if(!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
+
+        if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
+
+    if (!command[0]) return msg.channel.send("아직은 유튜브 링크만 됩니다");
+
+    let validate = ytdl.validateURL(command[0]);
+
+    if (!validate) return msg.channel.send("죄송하지만 이 주소는 없는 주소 입니다");
+
+    let info = ytdl.getInfo(command[1]);
+    let connection = msg.member.voiceChannel.join();
+    let dispatcher = connection.play(ytdl(command[1], { filter: "audioonly" }));
+
+    msg.channel.send(`지금 플레이 중: ${info.title}`);
+   },
 };
