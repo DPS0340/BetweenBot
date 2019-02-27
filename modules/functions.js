@@ -100,7 +100,7 @@ module.exports = {
     '블랙리스트': (msg, command) => {
         if (admin.check(msg.author.id)) {
             msg.reply(msg, '블랙리스트 목록:');
-            for (let id of blacklist.list) {
+            for (let id of blacklist.get()) {
                 msg.channel.send(id);
             }
         } else {

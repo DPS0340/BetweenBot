@@ -10,3 +10,5 @@ body
                 each id, name in server
                     li= name + ": " + id
                     // 사용자 관리 TODO
+                    a(href="/blacklistAdd?" + "id=" + id) 블랙리스트 추가
+                    a(href="/blacklistRemove?" + "id=" + id) 블랙리스트 해제

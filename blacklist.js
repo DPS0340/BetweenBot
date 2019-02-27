@@ -19,19 +19,20 @@ exports.get = () => refresh();
 
 
 const save = () => {
-    filehandler.saveFile('blacklist.json', JSON.stringify(exports.list));
+    filehandler.saveFile('blacklist.json', JSON.stringify(list));
 };
 
 exports.add = (id) => {
     refresh();
     list.push(Number(id));
+    console.log(list);
     save();
 };
 
 exports.remove = (id) => {
     refresh();
     id = Number(id);
-    if (list.contains(id)) {
+    if (list.includes(id)) {
         list = list.filter(guessNotBlackList => guessNotBlackList !== id);
         save();
         return true;

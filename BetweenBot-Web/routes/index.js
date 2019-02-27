@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const tokenmodule = require('../../token');
-
+const blacklist = require('../../blacklist');
 
 // 함수 부분
 
@@ -59,6 +59,26 @@ router.get('/login', function(req, res, next){
   res.render('login', { title: 'login' });
 });
 
+router.get('/blacklistAdd', function(req, res, next){
+  const tag = req.cookies.tag;
+  const token = req.cookies.token;
+  const id = req.query.id;
+  if(tokenmodule.doCheckPublicToken(tag, token)) {
+    blacklist.add(Number(id));
+  }
+  res.redirect('/servers');
+});
+
+router.get('/blacklistRemove', function(req, res, next){
+  const tag = req.cookies.tag;
+  const token = req.cookies.token;
+  const id = req.query.id;
+  if(tokenmodule.doCheckPublicToken(tag, token)) {
+    blacklist.remove(Number(id));
+  }
+  res.redirect('/servers');
+});
+
 router.get('/logout', function(req, res, next){
   const tag = req.cookies.tag;
   if(tag) {
@@ -71,7 +91,6 @@ router.get('/logout', function(req, res, next){
 router.get('/servers', function(req, res, next) {
   if (req.cookies.token) {
     if (tokenmodule.doCheckPublicToken(req.cookies.tag, req.cookies.token)) {
-      console.log(mapToObject(guildJSONParse()));
       res.render('guild', {guilds: mapToObject(guildJSONParse())});
     } else {
       res.render('noPermission');
