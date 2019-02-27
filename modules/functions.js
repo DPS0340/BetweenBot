@@ -484,7 +484,6 @@ module.exports = {
         })
     },
     'uptime': (msg, command) => {
-        msg.channel.send(parse(process.uptime()));
         function parse(a) {
             a = Number(a.toString().split('.')[0]);
             let day = Math.floor(a / 86400);
@@ -494,9 +493,9 @@ module.exports = {
             let minute = Math.floor(a / 60);
             a -= minute * 60;
             let second = a;
-
-            return day + "일 " + hour + "시간 " + minute + "분 " + second + "초"
+            return day + "일 " + hour + "시간 " + minute + "분 " + second + "초";
         }
+        msg.channel.send(parse(process.uptime()));
     },
     'botinfo': (msg, command) => {
         if (admin.check(msg.author.id)) {
@@ -534,10 +533,11 @@ module.exports = {
         let validate = ytdl.validateURL(args[0]);
         if (!validate) return msg.channel.send("죄송하지만 이 주소는 없는 주소 입니다");
         let info = ytdl.getInfo(args[0]);
-        let connection = msg.member.voiceChannel.join();
-        let dispatcher = connection.play(ytdl(args[0], { filter: "audioonly" }));
-
-        msg.channel.send(`지금 플레이 중: ${info.title}`);
+        msg.member.voiceChannel.join().then(connection => {
+            let dispatcher = connection.play(ytdl(args[0], { filter: "audioonly" }));
+            dispatcher.on("end", end => {msg.member.voiceChannel.leave()});
+            msg.channel.send(`지금 플레이 중: ${info.title}`);
+        }).catch(err => console.log(err));
     },
     'kick': (msg, command) => {
         let args = stringhandler.argsParse('kick', command);
