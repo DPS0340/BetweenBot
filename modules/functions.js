@@ -533,7 +533,7 @@ module.exports = {
                 msg.channel.send("지금 플레이 중: " + info.title);
             });
             msg.member.voiceChannel.join().then(connection => {
-                const streamOptions = { seek: 0, volume: 1 };
+                let streamOptions = { seek: 0, volume: 1, bitrate: 192000 };
                 const stream = ytdl(url, { filter : 'audioonly' });
                 const dispatcher = connection.playStream(stream, streamOptions);
                 dispatcher.on("end", end => {
