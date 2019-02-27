@@ -10,7 +10,11 @@ const request = require('request');
 const stringhandler = require('../stringhandler');
 const Discord = require('discord.js');
 const config = require('../botsetting.json');
-
+const osu = require('node-osu');
+const api = new osu.Api(`4b6523b6d53ded37e04033429752cfc44e841dc6`, {
+    notFoundAsError: true,
+    completeScores: false
+})
 
 let locale = filehandler.readFile('lang.txt');
 
