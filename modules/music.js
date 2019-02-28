@@ -30,7 +30,7 @@ module.exports = {
             }).catch(err => console.log(err));
         }
 
-        if (!msg.member.voiceChannel) return msg.channel.send("음성채널에서 들어가주세요!");
+        if (!msg.member.voiceChannel) return msg.channel.send("음성채널에 들어가주세요!");
         if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
         const raw = stringhandler.cutTextHead('play ', command);
         if (!raw) return msg.channel.send("인자가 없습니다");
@@ -41,9 +41,10 @@ module.exports = {
                 try {
                     let embed = new Discord.RichEmbed()
                         .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
-                        .setColor(`${config.color}`);
+                        .setColor(`${config.color}`)
+                        .setTitle(url + ' 검색 결과');
                     for (let i = 0; i < 5; i++) {
-                        embed.addField(i + 1 + "번째: " + r.videos[i].title, "ㅡ출처: " + r.videos[i].author.name + "\n", true);
+                        embed.addField(i + 1 , `[${r.videos[i].title}](${'https://youtube.com'}}${r.videos[i].url})` + '\n' + r.videos[i].author.name + "\n", true);
                     }
                     msg.channel.send(embed);
                     function checkRecursive(msg) {
