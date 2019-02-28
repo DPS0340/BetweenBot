@@ -44,7 +44,7 @@ module.exports = {
                         .setColor(`${config.color}`)
                         .setTitle(url + ' 검색 결과');
                     for (let i = 0; i < 5; i++) {
-                        embed.addField(i + 1 , `[${r.videos[i].title}](${'https://youtube.com'}}${r.videos[i].url})` + '\n' + r.videos[i].author.name + "\n", true);
+                        embed.addField(i + 1 , `[${r.videos[i].title}](${'https://youtube.com'}${r.videos[i].url})` + '\n' + r.videos[i].author.name + "\n", true);
                     }
                     msg.channel.send(embed);
                     function checkRecursive(msg) {
