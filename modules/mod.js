@@ -184,5 +184,10 @@ module.exports = {
         msg.guild.member(kUser).kick("없음");
         msg.channel.send(kUser + " 유저를 성공적으로 킥 했습니다");
     },
-    'afk': (msg, command)
+    'afk': (msg, command) => {
+        return this.setPresence({ afk });
+        msg.channel.send("This user is now AFK.")
+    },
+
+  }
 };
