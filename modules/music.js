@@ -11,7 +11,7 @@ module.exports = {
                 let embed = new Discord.RichEmbed()
                     .setTitle(info.title)
                     .setURL(url)
-                    .setImage(`https://img.youtube.com/vi/${info.video_id}/maxresdefault.jpg`)
+                    .setImage(`https://i.ytimg.com/vi_webp/${info.video_id}/maxresdefault.webp`)
                     .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
                     .setColor(`${config.color}`)
                     .setFooter(`출처: ${info.author.name}`)
