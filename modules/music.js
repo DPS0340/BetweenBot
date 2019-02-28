@@ -65,7 +65,6 @@ module.exports = {
                             }
                         });
                     }
-
                     checkRecursive(msg);
                 } catch (e) {
                     msg.channel.send("검색 결과가 없습니다!");
@@ -73,7 +72,7 @@ module.exports = {
                 }
             });
         } else {
-            play(url)
+            play(url);
         }
     },
     'exit': (msg, command) => {
