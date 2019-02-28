@@ -77,6 +77,10 @@ module.exports = {
         }
     },
     'exit': (msg, command) => {
-        if (msg.guild.me.voiceChannel) msg.member.voiceChannel.leave();
+        try {
+            msg.member.voiceChannel.leave();
+        } catch (e) {
+            
+        }
     },
 };
