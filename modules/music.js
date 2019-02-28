@@ -11,8 +11,12 @@ module.exports = {
                 let embed = new Discord.RichEmbed()
                 embed.setTitle(info.title)
                 embed.setURL(url)
-                embed.addField('대기열에 추가 한 사람', `<@${msg.author.id}>`)
-                embed.addField('업로드 한 사람', info.author.name);
+                embed.setThumbnail(`https://img.youtube.com/vi/${info.video_id}/mqdefault.jpg`)
+                embed.setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
+                embed.setColor(`${config.color}`)
+                embed.setFooter(`출처: ${info.author.name}`)
+                embed.setTimestamp();
+               // embed.addField('설명', info.description, true); 이건 embed 1024자 넘으면 에러 떠서 안씁니다
                 msg.channel.send(embed);
             });
             msg.member.voiceChannel.join().then(connection => {
