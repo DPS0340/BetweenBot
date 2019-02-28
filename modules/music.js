@@ -39,9 +39,13 @@ module.exports = {
         if (!validate) {
             ytSearch(url, function (err, r) {
                 try {
-                    for (i = 0; i < 5; i++) {
-                        msg.channel.send(i + 1 + "번째: " + r.videos[i].title);
+                    let embed = new Discord.RichEmbed()
+                        .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
+                        .setColor(`${config.color}`);
+                    for (let i = 0; i < 5; i++) {
+                        embed.addfield(i + 1 + "번째: " + r.videos[i].title, "ㅡ출처: " + r.videos[i].author.name + "\n", true);
                     }
+                    msg.channel.send(embed);
                     function checkRecursive(msg) {
                         const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, {
                             max: 1,
