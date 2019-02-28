@@ -55,9 +55,9 @@ module.exports = {
             let embed = new Discord.RichEmbed()
                 .setTitle(`사이 봇의 정보`)
                 .setColor(`${config.color}`)
-                .addField("유저", `${client.users.size}`, true)
-                .addField("서버", `${client.guilds.size}`, true)
-                .addField("순수 유저", `${client.users.filter(a => a.bot == false).size}`, true)
+                .addField("User", `${client.users.size}`, true)
+                .addField("Server", `${client.guilds.size}`, true)
+                .addField("Only user", `${client.users.filter(a => a.bot == false).size}`, true)
                 .addField("봇 개수", `${client.users.filter(a => a.bot == true).size}`, true)
                 .setTimestamp();
             msg.channel.send(embed)
