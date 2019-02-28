@@ -9,13 +9,13 @@ module.exports = {
             ytdl.getInfo(url, {downloadURL: true}, (err, info) => {
                 if (err) throw err;
                 let embed = new Discord.RichEmbed()
-                embed.setTitle(info.title)
-                embed.setURL(url)
-                embed.setThumbnail(`https://img.youtube.com/vi/${info.video_id}/mqdefault.jpg`)
-                embed.setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
-                embed.setColor(`${config.color}`)
-                embed.setFooter(`출처: ${info.author.name}`)
-                embed.setTimestamp();
+                    .setTitle(info.title)
+                    .setURL(url)
+                    .setThumbnail(`https://img.youtube.com/vi/${info.video_id}/mqdefault.jpg`)
+                    .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
+                    .setColor(`${config.color}`)
+                    .setFooter(`출처: ${info.author.name}`)
+                    .setTimestamp();
                // embed.addField('설명', info.description, true); 이건 embed 1024자 넘으면 에러 떠서 안씁니다
                 msg.channel.send(embed);
             });
