@@ -50,7 +50,7 @@ module.exports = {
                     function checkRecursive(msg) {
                         const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, {
                             max: 1,
-                            time: 3000
+                            time: 100000
                         });
                         collector.on('collect', m => {
                             const check = (message) => {
