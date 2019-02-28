@@ -19,9 +19,9 @@ module.exports = {
                 .setAuthor(user.username)
                 .setDescription(`${user.username}님의 정보입니다!`)
                 .setThumbnail(user.displayAvatarURL)
-                .addField('Name:', `${user.tag}`)
-                .addField('ID:', `${user.id}`)
-                .addField('Creation date:', user.createdAt);
+                .addField('이름:', `${user.tag}`)
+                .addField('아이디:', `${user.id}`)
+                .addField('계정 생성일:', user.createdAt);
             msg.channel.send(embed);
         }
         let embed = new Discord.RichEmbed();
@@ -40,14 +40,14 @@ module.exports = {
             .setDescription("Server Information")
             .setColor(`${config.color}`)
             .setThumbnail(msg.guild.iconURL)
-            .addField("Server Name", msg.guild.name)
-            .addField("Created On", msg.guild.createdAt)
-            .addField("You Joined", msg.member.joinedAt)
-            .addField("Total Members", msg.guild.memberCount)
-            .addField("Roles", msg.guild.roles.reduce((role, result) => result += role + ' '))
-            .addField("Owner", msg.guild.owner)
-            .addField("Channel", msg.guild.channels.size)
-            .addField("ID", msg.guild.id);
+            .addField("서버 이름", msg.guild.name)
+            .addField("서버 생성일", msg.guild.createdAt)
+            .addField("참가일", msg.member.joinedAt)
+            .addField("총 멤버수", msg.guild.memberCount)
+            .addField("역할", msg.guild.roles.reduce((role, result) => result += role + ' '))
+            .addField("소유자", msg.guild.owner)
+            .addField("채널", msg.guild.channels.size)
+            .addField("아이디", msg.guild.id);
         msg.channel.send(serverembed);
     },
     'botinfo': (msg, command) => {
@@ -57,7 +57,7 @@ module.exports = {
                 .setColor(`${config.color}`)
                 .addField("유저", `${client.users.size}`, true)
                 .addField("서버", `${client.guilds.size}`, true)
-                .addField("순수 유저", `${client.users.filter(a => a.bot == false).size}`, true)
+                .addField("사람 수", `${client.users.filter(a => a.bot == false).size}`, true)
                 .addField("봇 개수", `${client.users.filter(a => a.bot == true).size}`, true)
                 .setTimestamp();
             msg.channel.send(embed)
@@ -85,7 +85,7 @@ module.exports = {
             .setColor(role.hexColor)
             .setTitle(`역할: ${role.name}`)
             .addField('멤버', role.members.size)
-            .addField('Hex', role.hexColor)
+            .addField('색상', role.hexColor)
             .addField('만든 날짜', role.createdAt.toDateString())
             .addField('편집 가능 여부', role.editable.toString())
             .addField('관리 권한', role.managed.toString())
