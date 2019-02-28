@@ -11,6 +11,7 @@ module.exports = {
                 let embed = new Discord.RichEmbed()
                     .setTitle(info.title)
                     .setURL(url)
+                    .addField(`동영상 길이`,`${info.length_seconds}초`)
                     .setImage(`https://i.ytimg.com/vi_webp/${info.video_id}/maxresdefault.webp`)
                     .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
                     .setColor(`${config.color}`)
