@@ -39,11 +39,27 @@ module.exports = {
             ytSearch(url, function ( err, r ) {
                 try {
                     for( i = 1; i < 6; i ++){
-                    msg.channel.send( i+" 번쨰 "+r.videos[i].title);
+                    msg.channel.send( i+"번째: "+r.videos[i].title);
                     }
-                   // play("https://youtube.com" + r.videos[0].url);
-                } catch {
+                    function checkRecursive(msg) {
+                        const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, { max: 1, time: 10000 });
+                        collector.on('collect', m => {
+                            const check = (message) => {
+                                let num = Number(message.content);
+                                play("https://youtube.com" + r.videos[num].url);
+                            };
+                            try {
+                                check(m);
+                            } catch (e) {
+                                m.channel.send("1 ~ 5 사이의 숫자로 입력해 주세요.");
+                                checkRecursive(msg);
+                            }
+                        });
+                    }
+                    checkRecursive(msg);
+                } catch (e) {
                     msg.channel.send("검색 결과가 없습니다!");
+                    console.log(e);
                 }
             });
         } else {
