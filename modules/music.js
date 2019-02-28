@@ -43,7 +43,7 @@ module.exports = {
                         .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
                         .setColor(`${config.color}`);
                     for (let i = 0; i < 5; i++) {
-                        embed.addfield(i + 1 + "번째: " + r.videos[i].title, "ㅡ출처: " + r.videos[i].author.name + "\n", true);
+                        embed.addField(i + 1 + "번째: " + r.videos[i].title, "ㅡ출처: " + r.videos[i].author.name + "\n", true);
                     }
                     msg.channel.send(embed);
                     function checkRecursive(msg) {
