@@ -63,7 +63,7 @@ exports.checkHasToken = (name) => {
 
 exports.doCheckPublicToken = (name, pub) => {
     refresh();
-    if(exports.checkHasToken(name)) {
+    if (exports.checkHasToken(name)) {
         return list.get(name).publicToken === pub;
     } else {
         return false;
@@ -72,7 +72,7 @@ exports.doCheckPublicToken = (name, pub) => {
 
 exports.getPublicToken = (name) => {
     refresh();
-    if(exports.checkHasToken(name)) {
+    if (exports.checkHasToken(name)) {
         return list.get(name).publicToken;
     } else {
         return null;
@@ -81,10 +81,9 @@ exports.getPublicToken = (name) => {
 
 exports.getPrivateToken = (name, pub) => {
     refresh();
-    if(exports.doCheckPublicToken(name, pub)) {
+    if (exports.doCheckPublicToken(name, pub)) {
         return list[name].privateToken;
-    }
-    else {
+    } else {
         return null;
     }
 };

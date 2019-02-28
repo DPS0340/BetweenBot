@@ -39,10 +39,9 @@ module.exports = {
         if (!validate) {
             ytSearch(url, function (err, r) {
                 try {
-                    for (i = 1; i < 6; i++) {
-                        msg.channel.send(i + "번째: " + r.videos[i].title);
+                    for (i = 0; i < 5; i++) {
+                        msg.channel.send(i + 1 + "번째: " + r.videos[i].title);
                     }
-
                     function checkRecursive(msg) {
                         const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, {
                             max: 1,
@@ -51,7 +50,7 @@ module.exports = {
                         collector.on('collect', m => {
                             const check = (message) => {
                                 let num = Number(message.content);
-                                play("https://youtube.com" + r.videos[num].url);
+                                play("https://youtube.com" + r.videos[num-1].url);
                             };
                             try {
                                 check(m);

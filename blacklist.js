@@ -36,8 +36,7 @@ exports.remove = (id) => {
         list = list.filter(guessNotBlackList => guessNotBlackList !== id);
         save();
         return true;
-    }
-    else {
+    } else {
         return false;
     }
 };
