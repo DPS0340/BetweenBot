@@ -60,12 +60,12 @@ module.exports = {
                 .setColor(`${config.color}`)
                 .addField("유저", `${client.users.size}`, true)
                 .addField("서버", `${client.guilds.size}`, true)
-                .addField("사람 수", `${client.users.filter(a => a.bot == false).size}`, true)
-                .addField("봇 개수", `${client.users.filter(a => a.bot == true).size}`, true)
+                .addField("사람 수", `${client.users.filter(a => a.bot === false).size}`, true)
+                .addField("봇 개수", `${client.users.filter(a => a.bot === true).size}`, true)
                 .setTimestamp();
             msg.channel.send(embed)
         } else {
-            reply(msg, '권한이 없습니다!');
+            msg.reply('권한이 없습니다!');
         }
     },
     '멜론': (msg, command) => {
@@ -120,7 +120,7 @@ module.exports = {
             }
             body = JSON.parse(body);
             if (body.result) {
-                if (body.temp, body.time) {
+                if (body.temp && body.time) {
                     let embed = new Discord.RichEmbed()
                         .setColor(`${config.color}`)
                         .setTimestamp()
@@ -149,7 +149,7 @@ module.exports = {
                 .addField('국가 랭크', user.pp.countryRank, true)
                 .addField('플레이 수', user.counts.plays, true)
                 .addField('성공', `${user.accuracyFormatted}`, true)
-                .setFooter('명령어 쓴 사람 ' + msg.author.tag, msg.author.avatarURL)
+                .setFooter('명령어 쓴 사람 ' + msg.author.tag, msg.author.avatarURL);
             msg.channel.send(embed)
 
         })
@@ -163,7 +163,7 @@ module.exports = {
                 return msg.reply('에러');
             }
             body = JSON.parse(body);
-            if (body.id, body.name) {
+            if (body.id && body.name) {
                 let url1 = `https://visage.surgeplay.com/full/512/${body.id}`;
                 let url2 = `https://visage.surgeplay.com/head/512/${body.id}`;
                 let url3 = `https://visage.surgeplay.com/face/512/${body.id}`;
