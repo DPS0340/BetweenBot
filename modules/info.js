@@ -8,9 +8,12 @@ const api = new osu.Api(`4b6523b6d53ded37e04033429752cfc44e841dc6`, {
 });
 const stringhandler = require('../stringhandler');
 const admin = require('../admin');
-
+const client = require('../client').client;
 
 module.exports = {
+    '핑': (msg, command) => {
+      msg.reply(Math.round(client.ping) + "ms");
+    },
     'userinfo': (msg, command) => {
         let args = stringhandler.argsParse('userinfo', 'command');
         function senduserinfo(user) {

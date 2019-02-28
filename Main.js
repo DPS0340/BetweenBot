@@ -1,14 +1,8 @@
 const Discord = require('discord.js');
 const config = require('./botsetting.json');
-const translate = require('@vitalets/google-translate-api');
-const superagent = require("superagent");
-const filehandler = require('./filehandler');
-const admin = require('./admin');
 const blacklist = require('./blacklist');
-const client = new Discord.Client();
+const client = require('./client').client;
 const web = require('./BetweenBot-Web/app');
-const token = require('./token');
-const request = require('request');
 const moduleloader = require('./moduleloader');
 const stringhandler = require('./stringhandler');
 
