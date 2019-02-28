@@ -11,9 +11,8 @@ const webapp = web.app;
 web.run();
 
 
-
 function prefixCheckAndIfExistsRun(prefix, msg, func) {
-    if(msg.content.startsWith(prefix)) func(msg);
+    if (msg.content.startsWith(prefix)) func(msg);
 }
 
 function blackListCheck(msg) {
@@ -27,13 +26,13 @@ function blackListCheck(msg) {
 
 function bulkCommandCheck(msg, command, aBunchOfFunctions) {
     try {
-        for(func of aBunchOfFunctions) {
-            if(func(msg, command)) throw "Gotcha!";
+        for (func of aBunchOfFunctions) {
+            if (func(msg, command)) throw "Gotcha!";
         }
         throw "Not Gotcha!";
     } catch (e) {
-        if(e === "Gotcha!") return true;
-        else if(e === "Not Gotcha!") return false;
+        if (e === "Gotcha!") return true;
+        else if (e === "Not Gotcha!") return false;
         // 이건 예측되지 못한 오류가 발생했다는 의미입니다.
         // 이 경우에는 함수의 코드를 수정해야 합니다.
         else {
@@ -84,8 +83,8 @@ function pushStartsWithTemplate(arr, expected, func) {
 }
 
 function loadModules() {
-    for(let dict of moduleloader.modules.values()) {
-        for(let [name, func] of Object.entries(dict)) {
+    for (let dict of moduleloader.modules.values()) {
+        for (let [name, func] of Object.entries(dict)) {
             pushStartsWithTemplate(externalFunctions, name, func);
         }
     }
