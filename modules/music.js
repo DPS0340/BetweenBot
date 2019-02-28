@@ -34,7 +34,10 @@ module.exports = {
         if (!validate) {
             ytSearch(url, function ( err, r ) {
                 try {
-                    play("https://youtube.com" + r.videos[0].url);
+                    for( i = 1; i < 6; i ++){
+                    msg.channel.send( i+" 번쨰 "+r.videos[i].title);
+                    }
+                   // play("https://youtube.com" + r.videos[0].url);
                 } catch {
                     msg.channel.send("검색 결과가 없습니다!");
                 }
