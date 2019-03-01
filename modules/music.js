@@ -3,6 +3,8 @@ const ytdl = require('ytdl-core');
 const Discord = require('discord.js');
 const stringhandler = require('../stringhandler');
 const config = require('../botsetting.json');
+const request = require('request');
+
 module.exports = {
     'play': (msg, command) => {
         function play(url) {
@@ -81,6 +83,27 @@ module.exports = {
             msg.member.voiceChannel.leave();
         } catch (e) {
             
+        }
+    },
+    'sc': (msg, command) => {
+        const raw1 = stringhandler.cutTextHead('sc ', command);
+        if (!raw1) return msg.channel.send("인자가 없습니다");
+        if (raw1.indexOf("soundcloud.com") !== -1) {
+            request("http://api.soundcloud.com/resolve.json?url=" + raw1 + "&client_id=71dfa98f05fa01cb3ded3265b9672aaf", function (error, response, body) {
+                if (error) msg.reply(error);
+                else if (response.statusCode === 200) {
+                    body = JSON.parse(body);
+                    let embed = new Discord.RichEmbed()
+                        .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
+                        .setColor(`${config.color}`)
+                        .setTitle(body.title)
+                        .setURL(body.uri) // url 아니구 uri 맞습니다
+                        .setThumbnail(body.artwork_url)
+                        .addField("정보", " by **" + body.user.username + "** *(" + Math.floor(body.duration / 1000) + " 초)* ")
+                        .setFooter("#" + body.id);
+                    msg.channel.send(embed);
+                }
+            });
         }
     },
 };
