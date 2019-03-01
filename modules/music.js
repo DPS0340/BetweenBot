@@ -4,6 +4,10 @@ const Discord = require('discord.js');
 const stringhandler = require('../stringhandler');
 const config = require('../botsetting.json');
 const request = require('request');
+const ffmpeg = require('fluent-ffmpeg');
+const fs = require('fs');
+const https = require('https');
+
 
 module.exports = {
     'play': (msg, command) => {
@@ -32,7 +36,6 @@ module.exports = {
                 });
             }).catch(err => console.log(err));
         }
-
         if (!msg.member.voiceChannel) return msg.channel.send("음성채널에 들어가주세요!");
         if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
         const raw = stringhandler.cutTextHead('play ', command);
@@ -97,11 +100,36 @@ module.exports = {
                         .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
                         .setColor(`${config.color}`)
                         .setTitle(body.title)
-                        .setURL(body.uri) // url 아니구 uri 맞습니다
+                        .setURL(raw1)
                         .setThumbnail(body.artwork_url)
                         .addField("정보", " by **" + body.user.username + "** *(" + Math.floor(body.duration / 1000) + " 초)* ")
                         .setFooter("#" + body.id);
                     msg.channel.send(embed);
+                    msg.member.voiceChannel.join().then(connection => {
+                        console.log(body.download_url + "?client_id=71dfa98f05fa01cb3ded3265b9672aaf");
+                        https.get(body.download_url + "?client_id=71dfa98f05fa01cb3ded3265b9672aaf", (response) => {
+                            if (response.statusCode !== 200) {
+                                return console.log('Response status was ' + response.statusCode);
+                            }
+                            let outStream = fs.createWriteStream('./sc/' + body.id + '.mp3');
+                            response.pipe(outStream);
+                            // let write = fs.createWriteStream('./sc/' + body.id);
+                            // write.on('end', () => {
+                            //     ffmpeg('./sc/' + body.id)
+                            //         .inputFormat('mp3')
+                            //         .on('error', function(err) {
+                            //             console.log('An error occurred: ' + err.message);
+                            //         })
+                            //         .pipe(outStream)
+                            //         .end();
+                                let streamOptions = {seek: 0, volume: 1, bitrate: 64000};
+                                const dispatcher = connection.playFile('./sc/' + body.id + '.mp3', streamOptions);
+                                dispatcher.on("end", end => {
+                                    msg.channel.send("노래가 끝났습니다!");
+                                    msg.member.voiceChannel.leave();
+                                });
+                        });
+                    });
                 }
             });
         }
