@@ -2,6 +2,7 @@ const admin = require('../admin');
 const blacklist = require('../blacklist');
 const Discord = require('discord.js');
 const config = require('../botsetting.json');
+const client = require('../client').client;
 
 module.exports = {
     '어드민': (msg, command) => {
@@ -184,10 +185,8 @@ module.exports = {
         msg.guild.member(kUser).kick("없음");
         msg.channel.send(kUser + " 유저를 성공적으로 킥 했습니다");
     },
-    'afk': (msg, command) => {
-        return this.setPresence({ afk });
-        msg.channel.send("This user is now AFK.")
-    },
-
-  }
+    // 'afk': (msg, command) => {
+    //     client.setPresence({ afk });
+    //     msg.channel.send("This user is now AFK.");
+    // },
 };
