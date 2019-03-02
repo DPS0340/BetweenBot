@@ -3,7 +3,7 @@ const filehandler = require('../filehandler');
 const request = require('request');
 const config = require('../botsetting.json');
 
-let locale = filehandler.readFile('lang.txt');
+let locale = 'ko';
 
 // reply 번역
 function reply(msg, text) {
