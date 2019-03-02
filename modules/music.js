@@ -10,7 +10,7 @@ const https = require('https');
 
 
 module.exports = {
-    'play': (msg, command) => {
+    '유튜브': (msg, command) => {
         function play(url) {
             ytdl.getInfo(url, {downloadURL: true}, (err, info) => {
                 if (err) throw err;
@@ -36,7 +36,20 @@ module.exports = {
                 });
             }).catch(err => console.log(err));
         }
-        if (!msg.member.voiceChannel) return msg.channel.send("음성채널에 들어가주세요!");
+        function searchNoPlay() {
+            let youtube = stringhandler.cutTextHead('유튜브 ', command);
+            let link = `https://www.youtube.com/results?search_query=` + encodeURI(youtube);
+            if (!youtube) return msg.reply(`Please enter a keyword.`);
+            let embed = new Discord.RichEmbed()
+                .setColor("RED")
+                .setTimestamp()
+                .addField('Action:', 'Searching on youtube')
+                .addField("Word:", youtube)
+                .addField('Link:', link)
+                .setFooter("Your avatar", msg.author.avatarURL);
+            msg.channel.send(embed);
+        }
+        if (!msg.member.voiceChannel) return searchNoPlay();
         if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
         const raw = stringhandler.cutTextHead('play ', command);
         if (!raw) return msg.channel.send("인자가 없습니다");

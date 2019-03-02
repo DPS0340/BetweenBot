@@ -3,19 +3,6 @@ const stringhandler = require('../stringhandler');
 const request = require('request');
 
 module.exports = {
-    '유튜브': (msg, command) => {
-        let youtube = stringhandler.cutTextHead('유튜브 ', command);
-        let link = `https://www.youtube.com/results?search_query=` + encodeURI(youtube);
-        if (!youtube) return msg.reply(`Please enter a keyword.`);
-        let embed = new Discord.RichEmbed()
-            .setColor("RED")
-            .setTimestamp()
-            .addField('Action:', 'Searching on youtube')
-            .addField("Word:", youtube)
-            .addField('Link:', link)
-            .setFooter("Your avatar", msg.author.avatarURL);
-        msg.channel.send(embed);
-    },
     '개': (msg, command) => {
         let url = `http://random.dog/woof.json`;
         request(url, function (err, response, body) {
