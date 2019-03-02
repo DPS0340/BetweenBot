@@ -4,6 +4,8 @@ const request = require('request');
 
 module.exports = {
     '유튜브': (msg, command) => {
+        let messageArray = message.content.split(" ");
+        let args = messageArray.slice(1);
         let youtube = stringhandler.cutTextHead('유튜브', command);
         let link = `https://www.youtube.com/results?search_query=` + youtube;
         if (!youtube) return message.reply(`Please enter a keyword.`);
