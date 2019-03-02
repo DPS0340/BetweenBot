@@ -58,37 +58,49 @@ module.exports = {
         if (!validate) {
             ytSearch(url, function (err, r) {
                 try {
-                    let embed = new Discord.RichEmbed()
-                        .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
-                        .setColor(`${config.color}`)
-                        .setTitle(url + ' 검색 결과');
-                    for (let i = 0; i < 5; i++) {
-                        embed.addField(i + 1 , `[${r.videos[i].title}](${'https://youtube.com'}${r.videos[i].url})` + '\n' + r.videos[i].author.name + "\n", true);
+                    function show(msg, count) {
+                        let embed = new Discord.RichEmbed()
+                            .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
+                            .setColor(`${config.color}`)
+                            .setTitle(url + ' 검색 결과');
+                        for (let i = 5 * count - 5; i < 5 * count; i++) {
+                            embed.addField(i + 1 , `[${r.videos[i].title}](${'https://youtube.com'}${r.videos[i].url})` + '\n' + r.videos[i].author.name + "\n", true);
+                        }
+                        msg.channel.send(embed);
                     }
-                    msg.channel.send(embed);
-                    function checkRecursive(msg) {
+                    const collec = (msg, count) => {
                         const collector = new Discord.MessageCollector(msg.channel, m => m.author.id === msg.author.id, {
                             max: 1,
                             time: 100000
                         });
+                        show(msg, count);
                         collector.on('collect', m => {
-                            const check = (message) => {
-                                let num = Number(message.content);
-                                play("https://youtube.com" + r.videos[num-1].url);
-                            };
                             try {
-                                check(m);
+                                let num = parseInt(m.content);
+                                if(!isNaN(num)) {
+                                    play("https://youtube.com" + r.videos[num - 1].url);
+                                } else {
+                                    if (m.content === 'next') {
+                                        collec(msg, count + 1);
+                                    }
+                                    else if (m.content === 'prev' && count > 1) {
+                                        collec(msg, count - 1);
+                                    }
+                                    else {
+                                        collec(msg, count);
+                                    }
+                                }
                             } catch (e) {
-                                m.channel.send("1 ~ 5 사이의 숫자로 입력해 주세요.");
-                                checkRecursive(msg);
+
                             }
                         });
-                    }
-                    checkRecursive(msg);
+                    };
+                    collec(msg, 1);
                 } catch (e) {
                     msg.channel.send("검색 결과가 없습니다!");
                     console.log(e);
                 }
+
             });
         } else {
             play(url);
