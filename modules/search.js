@@ -1,3 +1,5 @@
+const Discord = require('discord.js');
+
 module.exports = {
     '유튜브': (msg, command) => {
         let youtube = args.slice(0).join('+');
