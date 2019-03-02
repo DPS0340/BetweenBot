@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const stringhandler = require('../stringhandler');
+const snekfetch = require('snekfetch');
 
 module.exports = {
     '유튜브': (msg, command) => {
