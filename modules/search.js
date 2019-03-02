@@ -1,4 +1,4 @@
-//if (message.content.startsWith(`${prefix}youtube`)) {
+/*if (message.content.startsWith(`${prefix}youtube`)) {
         let youtube = args.slice(0).join('+');
 
         let link = `https://www.youtube.com/results?search_query=` + youtube;
@@ -21,4 +21,4 @@
 
         message.channel.send(embed);
     }
-}//
+}*/
