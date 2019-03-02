@@ -60,4 +60,24 @@ module.exports = {
             }
         })
     },
+      '트위': (msg, command) => {    
+    const api = `https://api.twitch.tv/kraken/channels/sirusiru1818?client_id=h5otvowaukebe06barer212ljrbz9n`;
+    snekfetch.get(api).then(r => {
+        let embed = new Discord.RichEmbed()
+            .setAuthor(
+                `${r.body.display_name}`,
+                `${r.body.logo}`,
+                `${r.body.url}`
+            )
+            .setColor(config.color)
+            .setThumbnail(`http://static-cdn.jtvnw.net/ttv-boxart/${encodeURI(r.body.game)}-500x500.jpg`)
+            .addField('방송 제목', `${r.body.status}`, true)
+            .addField('게임 중', `${r.body.game}`, true)
+            .addField('팔로우 수', `${r.body.followers}`, true)
+            .addField('조회수', `${r.body.views}`, true)
+            .setImage(r.body.video_banner)
+
+        msg.channel.send(embed);
+    })
+   },
 };
