@@ -72,13 +72,26 @@ module.exports = {
     },
     '다음': (msg, command) => {
         let daum = stringhandler.cutTextHead('다음 ', command);
-        let link = `https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=` + encodeURI(naver);
+        let link = `https://search.daum.net/search?w=tot&DA=YZR&t__nil_searchbox=btn&sug=&sugo=&q=` + encodeURI(daum);
         if (!daum) return msg.reply(`키워드를 쳐 주세요.`);
         let embed = new Discord.RichEmbed()
             .setColor("Blue")
             .setTimestamp()
             .addField('다음 검색:', '다음에서 검색결과를 찾았습니다.')
             .addField("키워드:", daum)
+            .addField('링크:', link)
+            .setFooter("Betweenbot", msg.author.avatarURL);
+        msg.channel.send(embed);
+    },
+    '네이트': (msg, command) => {
+        let nate = stringhandler.cutTextHead('네이트 ', command);
+        let link = `https://search.daum.net/nate?thr=sbma&w=tot&q=` + encodeURI(nate);
+        if (!nate) return msg.reply(`키워드를 쳐 주세요.`);
+        let embed = new Discord.RichEmbed()
+            .setColor("RED")
+            .setTimestamp()
+            .addField('네이트 검색:', '에서 검색결과를 찾았습니다.')
+            .addField("키워드:", nate)
             .addField('링크:', link)
             .setFooter("Betweenbot", msg.author.avatarURL);
         msg.channel.send(embed);
