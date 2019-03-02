@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const stringhandler = require('../stringhandler');
-const stringhandler = require('../stringhandler');
 
 module.exports = {
     '유튜브': (msg, command) => {
@@ -73,6 +72,3 @@ module.exports = {
        })
     },
 }
-        message.channel.send(embed);
-    }
-};
