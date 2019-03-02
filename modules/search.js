@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const stringhandler = require('../stringhandler');
-const snekfetch = require('snekfetch');
+const request = require('request');
 
 module.exports = {
     '유튜브': (msg, command) => {
@@ -52,7 +52,7 @@ module.exports = {
         })
     },
     '트위': (msg, command) => {
-            let nike = stringhandler.argsParse('트위 ', command)[0];
+        let nike = stringhandler.cutTextHead('트위', command);
         const api = `https://api.twitch.tv/kraken/channels/${nike}?client_id=h5otvowaukebe06barer212ljrbz9n`;
         snekfetch.get(api).then(r => {
             let embed = new Discord.RichEmbed()
