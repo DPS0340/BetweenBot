@@ -51,7 +51,7 @@ module.exports = {
         }
         if (!msg.member.voiceChannel) return searchNoPlay();
         if (msg.guild.me.voiceChannel) return msg.channel.send(`이미 ${msg.guild.me.voiceChannel}에서 노래를 하고 있습니다`);
-        const raw = stringhandler.cutTextHead('play ', command);
+        const raw = stringhandler.cutTextHead('유튜브 ', command);
         if (!raw) return msg.channel.send("인자가 없습니다");
         let url = raw;
         let validate = ytdl.validateURL(url);
