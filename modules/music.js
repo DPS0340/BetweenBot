@@ -62,7 +62,8 @@ module.exports = {
                         let embed = new Discord.RichEmbed()
                             .setAuthor(`${msg.author.tag}`, msg.author.displayAvatarURL)
                             .setColor(`${config.color}`)
-                            .setTitle(url + ' 검색 결과');
+                            .setTitle(url + ' 검색 결과')
+                            .setFooter(count + " 페이지. prev | next");
                         for (let i = 5 * count - 5; i < 5 * count; i++) {
                             embed.addField(i + 1 , `[${r.videos[i].title}](${'https://youtube.com'}${r.videos[i].url})` + '\n' + r.videos[i].author.name + "\n", true);
                         }
