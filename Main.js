@@ -8,7 +8,7 @@ const stringhandler = require('./stringhandler');
 
 const webapp = web.app;
 
-web.run();
+web.run(); // 웹이랑 같이 돌아가는 
 
 
 function prefixCheckAndIfExistsRun(prefix, msg, func) {
@@ -103,7 +103,7 @@ client.on('message', msg => {
     if (msg.author.bot) return;
     if (msg.channel.type === "dm") return;
     prefixCheckAndIfExistsRun(config.prefix, msg, (msg) => {
-        blackListCheck(msg);
+        blackListCheck(msg); // 블랙리스트 
         let command = stringhandler.cutTextHead(config.prefix, msg.content);
         if (!bulkCommandCheck(msg, command, externalFunctions)) {
             msg.channel.send("유효한 명령어가 아닙니다!");
