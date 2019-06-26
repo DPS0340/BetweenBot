@@ -1,8 +1,14 @@
 const Discord = require('discord.js');
 const stringhandler = require('../stringhandler');
 const request = require('request');
+const BeaJoon = require('../handlers')
 
 module.exports = {
+    '백준유저': (msg, command) => {
+      let user = stringhandler.cutTextHead('백준유저', command);
+      const User =  new BeaJoon.BeaJoonUser(user);
+      User.search()
+    },
     '개': (msg, command) => {
         let url = `http://random.dog/woof.json`;
         request(url, function (err, response, body) {
